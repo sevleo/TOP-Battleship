@@ -1,4 +1,4 @@
-# Tic-Tac-Toe
+# Battleship
 
 ## Table of Contents
 
