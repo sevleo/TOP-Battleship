@@ -1,4 +1,4 @@
-import GameboardModule from "./gameboard";
+import GameboardModule from "../src/gameboard";
 
 test("retrieve ships", () => {
   const ships = [
