@@ -22,3 +22,4 @@ const ships = [
 ];
 
 GameboardModule.createShips(ships);
+GameboardModule.createBoard();
