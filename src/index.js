@@ -6,13 +6,19 @@ const test = document.createElement("div");
 test.textContent = "Hello World!";
 body.append(test);
 
-GameboardModule.createShips();
-console.log(GameboardModule.retrieveShips());
+const ships = [
+  {
+    shipLenght: 1,
+  },
+  {
+    shipLenght: 2,
+  },
+  {
+    shipLenght: 3,
+  },
+  {
+    shipLenght: 4,
+  },
+];
 
-const ship = GameboardModule.retrieveShips()[1];
-console.log(ship);
-
-ship.hit();
-ship.hit();
-console.log(ship.getHitCount());
-console.log(ship.isSunk());
+GameboardModule.createShips(ships);

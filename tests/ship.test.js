@@ -28,3 +28,26 @@ describe("checking if is sunk", () => {
     expect(ship.isSunk()).toBe(true);
   });
 });
+
+describe("assign & retrieve coordinates", () => {
+  test("1 length ship returns 1 length coordinates", () => {
+    const ship = ShipModule.createShip(1);
+    ship.assignCoordinates(["a", "1"]);
+    expect(ship.getCoordinates().length).toBe(ship.length);
+  });
+
+  test("2 length ship returns 2 length coordinates", () => {
+    const ship = ShipModule.createShip(2);
+    ship.assignCoordinates(["a", "1"], ["a", "2"]);
+    expect(ship.getCoordinates().length).toBe(ship.length);
+  });
+
+  test("coordinates retrieve are same as coordinates assigned", () => {
+    const ship = ShipModule.createShip(2);
+    ship.assignCoordinates(["a", "1"], ["a", "2"]);
+    expect(ship.getCoordinates()).toEqual([
+      ["a", "1"],
+      ["a", "2"],
+    ]);
+  });
+});

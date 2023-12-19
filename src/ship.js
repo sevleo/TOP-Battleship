@@ -21,8 +21,14 @@ const ShipModule = (() => {
         }
         return false;
       },
-      assignCoordinates(x, y) {
-        coordinates = [x, y];
+      assignCoordinates(...args) {
+        coordinates = args;
+      },
+      getCoordinates() {
+        return coordinates;
+      },
+      getLength() {
+        return length;
       },
     };
   }
