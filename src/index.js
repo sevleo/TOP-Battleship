@@ -1,12 +1,18 @@
 import "./styles.css";
-import ShipModule from "./ship";
+import GameboardModule from "./gameboard";
 
 const body = document.querySelector("body");
 const test = document.createElement("div");
 test.textContent = "Hello World!";
 body.append(test);
 
-const ship1 = ShipModule.createShip(5);
+GameboardModule.createShips();
+console.log(GameboardModule.retrieveShips());
 
-ship1.hit();
-console.log(ship1.getHitCount());
+const ship = GameboardModule.retrieveShips()[1];
+console.log(ship);
+
+ship.hit();
+ship.hit();
+console.log(ship.getHitCount());
+console.log(ship.isSunk());

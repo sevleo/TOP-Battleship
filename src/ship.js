@@ -1,10 +1,14 @@
+// Module responsible for managing ships
 const ShipModule = (() => {
+  // Creates a ship
   function createShip(length) {
     let hitCount = 0;
+    let coordinates = [];
 
     return {
       length,
       hitCount,
+      coordinates,
       hit() {
         hitCount += 1;
       },
@@ -16,6 +20,9 @@ const ShipModule = (() => {
           return true;
         }
         return false;
+      },
+      assignCoordinates(x, y) {
+        coordinates = [x, y];
       },
     };
   }
