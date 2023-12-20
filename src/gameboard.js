@@ -70,7 +70,6 @@ const GameboardModule = (() => {
   function createBoard() {
     createCells();
     createAdjacencies();
-    return board;
   }
 
   function createShips(args) {
@@ -78,10 +77,11 @@ const GameboardModule = (() => {
       const ship = ShipModule.createShip(element.shipLength);
       ships.push(ship);
     });
-    return ships;
   }
 
   return {
+    board,
+    ships,
     createBoard,
     createShips,
   };

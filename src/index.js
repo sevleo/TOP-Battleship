@@ -21,12 +21,13 @@ const ships = [
   },
 ];
 
-const board = GameboardModule.createBoard();
-const boardShips = GameboardModule.createShips(ships);
+GameboardModule.createBoard();
+GameboardModule.createShips(ships);
 
-console.log(board);
+console.log(GameboardModule.board);
 
-console.log(boardShips);
+console.log(JSON.stringify(GameboardModule.ships));
 
-boardShips[0].hit();
-console.log(boardShips);
+GameboardModule.ships[0].hit();
+
+console.log(JSON.stringify(GameboardModule.ships));
