@@ -81,7 +81,7 @@ describe("check adjacent tiles", () => {
 
 describe("testing attack function", () => {
   describe("1 length ship", () => {
-    GameboardModule.ships[0].assignCoordinates(1, 1);
+    GameboardModule.ships[0].assignCoordinates([1, 1]);
     test("test miss", () => {
       GameboardModule.receiveAttack([1, 2]);
       expect(GameboardModule.ships[0].isSunk()).toEqual(false);
@@ -113,6 +113,59 @@ describe("testing attack function", () => {
       GameboardModule.receiveAttack([4, 6]);
       expect(GameboardModule.ships[1].isSunk()).toEqual(true);
       expect(GameboardModule.ships[1].hitCount).toBe(2);
+    });
+  });
+
+  describe("3 length ship", () => {
+    GameboardModule.ships[2].assignCoordinates([6, 1], [6, 2], [6, 3]);
+    test("test hit", () => {
+      GameboardModule.receiveAttack([6, 1]);
+      expect(GameboardModule.ships[2].isSunk()).toEqual(false);
+      expect(GameboardModule.ships[2].hitCount).toBe(1);
+    });
+    test("test hit", () => {
+      GameboardModule.receiveAttack([6, 2]);
+      expect(GameboardModule.ships[2].isSunk()).toEqual(false);
+      expect(GameboardModule.ships[2].hitCount).toBe(2);
+    });
+    test("test hit and sink", () => {
+      GameboardModule.receiveAttack([6, 3]);
+      expect(GameboardModule.ships[2].isSunk()).toEqual(true);
+      expect(GameboardModule.ships[2].hitCount).toBe(3);
+    });
+
+    test("all ships are not sink yet", () => {
+      expect(GameboardModule.allShipsSunk()).toBe(false);
+    });
+  });
+
+  describe("4 length ship", () => {
+    GameboardModule.ships[3].assignCoordinates([8, 3], [8, 4], [8, 5], [8, 6]);
+    test("test hit", () => {
+      GameboardModule.receiveAttack([8, 4]);
+      expect(GameboardModule.ships[3].isSunk()).toEqual(false);
+      expect(GameboardModule.ships[3].hitCount).toBe(1);
+    });
+    test("test hit", () => {
+      GameboardModule.receiveAttack([8, 5]);
+      expect(GameboardModule.ships[3].isSunk()).toEqual(false);
+      expect(GameboardModule.ships[3].hitCount).toBe(2);
+    });
+
+    test("test hit", () => {
+      GameboardModule.receiveAttack([8, 3]);
+      expect(GameboardModule.ships[3].isSunk()).toEqual(false);
+      expect(GameboardModule.ships[3].hitCount).toBe(3);
+    });
+
+    test("test hit and sink", () => {
+      GameboardModule.receiveAttack([8, 6]);
+      expect(GameboardModule.ships[3].isSunk()).toEqual(true);
+      expect(GameboardModule.ships[3].hitCount).toBe(4);
+    });
+
+    test("all ships are sunk yet", () => {
+      expect(GameboardModule.allShipsSunk()).toBe(true);
     });
   });
 });

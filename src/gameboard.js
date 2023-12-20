@@ -86,7 +86,6 @@ const GameboardModule = (() => {
     missedShotVertex.adjacencyList.forEach((element) => {
       missingShots.push(element.coordinates);
     });
-    console.log(missingShots);
   }
 
   function receiveAttack(coordinates) {
@@ -107,12 +106,17 @@ const GameboardModule = (() => {
     }
   }
 
+  function allShipsSunk() {
+    return ships.every((ship) => ship.isSunk());
+  }
+
   return {
     board,
     ships,
     createBoard,
     createShips,
     receiveAttack,
+    allShipsSunk,
   };
 })();
 

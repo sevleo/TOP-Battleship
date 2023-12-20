@@ -34,3 +34,5 @@ console.log(JSON.stringify(GameboardModule.ships));
 GameboardModule.receiveAttack([4, 5]);
 
 console.log(GameboardModule.ships);
+
+console.log(GameboardModule.allShipsSunk());
