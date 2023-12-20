@@ -14,6 +14,19 @@ const GameboardModule = (() => {
     }
   }
 
+  // Find the vertex object matching the given coordinates
+  function findVertextObjectByCoordinates(coordinates) {
+    const foundVertex = board.vertices.find(
+      (vertex) =>
+        JSON.stringify(vertex.coordinates) === JSON.stringify(coordinates),
+    );
+
+    if (foundVertex) {
+      return foundVertex;
+    }
+    return null;
+  }
+
   // Fill out adjacencyList for a vertex
   function addCellAdjacencies(vertex) {
     const y = vertex.coordinates[0];
@@ -36,7 +49,8 @@ const GameboardModule = (() => {
         adjacency[1] > 0 &&
         adjacency[1] <= 10
       ) {
-        adjacencies.push(adjacency);
+        const adjacencyObject = findVertextObjectByCoordinates(adjacency);
+        adjacencies.push(adjacencyObject);
       }
     });
     return adjacencies;
@@ -46,7 +60,10 @@ const GameboardModule = (() => {
   function createAdjacencies() {
     board.vertices.forEach((vertex) => {
       // eslint-disable-next-line no-param-reassign
-      vertex.adjacencyList = addCellAdjacencies(vertex);
+      const adjacentVertices = addCellAdjacencies(vertex);
+      adjacentVertices.forEach((adjacentVertex) => {
+        board.addEdge(vertex, adjacentVertex);
+      });
     });
   }
 

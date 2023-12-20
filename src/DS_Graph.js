@@ -23,6 +23,7 @@ class Graph {
     this.vertices.push(vertex);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   addEdge(vertex1, vertex2) {
     vertex1.addNeighbor(vertex2);
     vertex2.addNeighbor(vertex1);
