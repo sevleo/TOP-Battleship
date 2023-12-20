@@ -1,7 +1,7 @@
 import ShipModule from "./ship";
 import Graph from "./DS_Graph";
 
-const GameboardModule = (() => {
+function GameboardModule() {
   const board = new Graph();
   const ships = [];
   const missingShots = [];
@@ -122,6 +122,6 @@ const GameboardModule = (() => {
     receiveAttack,
     allShipsSunk,
   };
-})();
+}
 
 export default GameboardModule;
