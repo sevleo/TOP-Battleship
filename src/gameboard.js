@@ -68,11 +68,13 @@ const GameboardModule = (() => {
     });
   }
 
+  // Fill the Board array
   function createBoard() {
     createCells();
     createAdjacencies();
   }
 
+  // Fill the Ships array
   function createShips(args) {
     args.forEach((element) => {
       const ship = ShipModule.createShip(element.shipLength);
@@ -80,6 +82,7 @@ const GameboardModule = (() => {
     });
   }
 
+  // Fill the missingShots array
   function recordMissingShot(coordinates) {
     const missedShotVertex = findVertextObjectByCoordinates(coordinates);
     missingShots.push(missedShotVertex.coordinates);
@@ -88,9 +91,9 @@ const GameboardModule = (() => {
     });
   }
 
+  // Register and process attacks
   function receiveAttack(coordinates) {
     let hitRegistered = false;
-
     ships.some((ship) => {
       if (
         JSON.stringify(ship.coordinates).includes(JSON.stringify(coordinates))
@@ -106,6 +109,7 @@ const GameboardModule = (() => {
     }
   }
 
+  // Check if all ships on a board have been sunk
   function allShipsSunk() {
     return ships.every((ship) => ship.isSunk());
   }
