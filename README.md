@@ -27,15 +27,3 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 ## License
 
 This project is licensed under the [MIT LICENSE](./LICENSE)
-
-y=5, x=4
-
-potential adjacencies
-4,3 - y-1, x-1
-4,4 - y-1, x
-4,5 - y-1, x+1
-5,3 - y, x-1
-5,5 - y, x+1
-6,3 - y+1, x-1
-6,4 - y+1, x
-6,5 - y+1, x+1

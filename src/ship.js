@@ -1,36 +1,28 @@
-// Module responsible for managing ships
 const ShipModule = (() => {
   // Creates a ship
-  function createShip(length) {
-    let hitCount = 0;
-    let coordinates = [];
-
-    return {
-      length,
-      hitCount,
-      coordinates,
+  function createShip(shipLength) {
+    const ship = {
+      hitCount: 0,
+      coordinates: [],
+      length: shipLength,
       hit() {
-        hitCount += 1;
-      },
-      getHitCount() {
-        return hitCount;
+        ship.hitCount += 1;
       },
       isSunk() {
-        if (this.getHitCount() === length) {
+        if (ship.hitCount === ship.length) {
           return true;
         }
         return false;
       },
       assignCoordinates(...args) {
-        coordinates = args;
+        ship.coordinates = args;
       },
       getCoordinates() {
-        return coordinates;
-      },
-      getLength() {
-        return length;
+        return ship.coordinates;
       },
     };
+
+    return ship;
   }
 
   return {

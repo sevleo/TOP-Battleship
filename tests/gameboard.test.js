@@ -3,77 +3,49 @@ import GameboardModule from "../src/gameboard";
 test("retrieve ships", () => {
   const ships = [
     {
-      shipLenght: 1,
+      shipLength: 1,
     },
     {
-      shipLenght: 2,
+      shipLength: 2,
     },
     {
-      shipLenght: 3,
+      shipLength: 3,
     },
     {
-      shipLenght: 4,
+      shipLength: 4,
     },
   ];
-  GameboardModule.createShips(ships);
-  expect(GameboardModule.retrieveShips().length).toBe(ships.length);
+  const boardShips = GameboardModule.createShips(ships);
+  expect(boardShips.length).toBe(ships.length);
 });
 
 describe("find adjacent tiles", () => {
-  GameboardModule.createBoard();
+  const board = GameboardModule.createBoard();
 
   test("check adjacent tiles of 1,1 vertex", () => {
-    const vertex = GameboardModule.retrieveBoard().vertices[0];
+    const vertex = board.vertices[0];
 
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[10],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[1],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[11],
-    );
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[10]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[1]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[11]);
   });
 
   test("check adjacent tiles of 4,4 vertex", () => {
-    const vertex = GameboardModule.retrieveBoard().vertices[33];
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[22],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[23],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[24],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[32],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[34],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[42],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[43],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[43],
-    );
+    const vertex = board.vertices[33];
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[22]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[23]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[24]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[32]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[34]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[42]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[43]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[43]);
   });
 
   test("check adjacent tiles of 10,10 vertex", () => {
-    const vertex = GameboardModule.retrieveBoard().vertices[99];
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[88],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[89],
-    );
-    expect(vertex.adjacencyList).toContainEqual(
-      GameboardModule.retrieveBoard().vertices[98],
-    );
+    const vertex = board.vertices[99];
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[88]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[89]);
+    expect(vertex.adjacencyList).toContainEqual(board.vertices[98]);
   });
 });

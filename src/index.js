@@ -8,19 +8,25 @@ body.append(test);
 
 const ships = [
   {
-    shipLenght: 1,
+    shipLength: 1,
   },
   {
-    shipLenght: 2,
+    shipLength: 2,
   },
   {
-    shipLenght: 3,
+    shipLength: 3,
   },
   {
-    shipLenght: 4,
+    shipLength: 4,
   },
 ];
 
-GameboardModule.createShips(ships);
-GameboardModule.createBoard();
-GameboardModule.retrieveBoard();
+const board = GameboardModule.createBoard();
+const boardShips = GameboardModule.createShips(ships);
+
+console.log(board);
+
+console.log(boardShips);
+
+boardShips[0].hit();
+console.log(boardShips);
