@@ -79,11 +79,22 @@ const GameboardModule = (() => {
     });
   }
 
+  function receiveAttack(coordinates) {
+    ships.forEach((ship) => {
+      if (
+        JSON.stringify(ship.coordinates).includes(JSON.stringify(coordinates))
+      ) {
+        ship.hit();
+      }
+    });
+  }
+
   return {
     board,
     ships,
     createBoard,
     createShips,
+    receiveAttack,
   };
 })();
 
