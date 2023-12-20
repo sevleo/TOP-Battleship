@@ -24,19 +24,12 @@ const ships = [
 GameboardModule.createBoard();
 GameboardModule.createShips(ships);
 
-// console.log(GameboardModule.board);
-
-// console.log(JSON.stringify(GameboardModule.ships));
-
-// GameboardModule.ships[0].hit();
-
-// console.log(JSON.stringify(GameboardModule.ships));
-
+// Testing script
 GameboardModule.ships[0].assignCoordinates([1, 1]);
 GameboardModule.ships[1].assignCoordinates([4, 5], [4, 6]);
 GameboardModule.receiveAttack([4, 4]);
 
-console.log(GameboardModule.ships);
+console.log(JSON.stringify(GameboardModule.ships));
 
 GameboardModule.receiveAttack([4, 5]);
 

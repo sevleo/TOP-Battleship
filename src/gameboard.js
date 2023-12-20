@@ -4,6 +4,7 @@ import Graph from "./DS_Graph";
 const GameboardModule = (() => {
   const board = new Graph();
   const ships = [];
+  const missingShots = [];
 
   // Create 10x10 cells as graph vertexes
   function createCells() {
@@ -79,14 +80,31 @@ const GameboardModule = (() => {
     });
   }
 
+  function recordMissingShot(coordinates) {
+    const missedShotVertex = findVertextObjectByCoordinates(coordinates);
+    missingShots.push(missedShotVertex.coordinates);
+    missedShotVertex.adjacencyList.forEach((element) => {
+      missingShots.push(element.coordinates);
+    });
+    console.log(missingShots);
+  }
+
   function receiveAttack(coordinates) {
-    ships.forEach((ship) => {
+    let hitRegistered = false;
+
+    ships.some((ship) => {
       if (
         JSON.stringify(ship.coordinates).includes(JSON.stringify(coordinates))
       ) {
         ship.hit();
+        hitRegistered = true;
+        return true;
       }
+      return false;
     });
+    if (!hitRegistered) {
+      recordMissingShot(coordinates);
+    }
   }
 
   return {
