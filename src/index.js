@@ -23,13 +23,12 @@ const ships = [
 
 // Two-players script
 const playerOneBoard = GameboardModule();
-const playerTwoBoard = GameboardModule();
-
 playerOneBoard.createBoard();
-playerTwoBoard.createBoard();
+playerOneBoard.createShips(ships);
 
-console.log(playerOneBoard.board === playerTwoBoard.board);
-console.log(playerOneBoard);
+const playerTwoBoard = GameboardModule();
+playerTwoBoard.createBoard();
+playerTwoBoard.createShips(ships);
 
 // Testing script
 // GameboardModule.createBoard();
