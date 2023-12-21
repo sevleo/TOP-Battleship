@@ -85,9 +85,13 @@ function GameboardModule() {
   // Fill the missingShots array
   function recordMissingShot(coordinates) {
     const missedShotVertex = findVertextObjectByCoordinates(coordinates);
-    missingShots.push(missedShotVertex.coordinates);
+    if (!missingShots.includes(missedShotVertex.coordinates)) {
+      missingShots.push(missedShotVertex.coordinates);
+    }
     missedShotVertex.adjacencyList.forEach((element) => {
-      missingShots.push(element.coordinates);
+      if (!missingShots.includes(element.coordinates)) {
+        missingShots.push(element.coordinates);
+      }
     });
   }
 
@@ -117,6 +121,7 @@ function GameboardModule() {
   return {
     board,
     ships,
+    missingShots,
     createBoard,
     createShips,
     receiveAttack,

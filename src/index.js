@@ -1,5 +1,6 @@
 import "./styles.css";
 import GameboardModule from "./gameboard";
+import Player from "./player";
 
 const body = document.querySelector("body");
 const test = document.createElement("div");
@@ -29,6 +30,12 @@ playerOneBoard.createShips(ships);
 const playerTwoBoard = GameboardModule();
 playerTwoBoard.createBoard();
 playerTwoBoard.createShips(ships);
+
+const playerOne = Player(playerOneBoard, "player");
+playerOneBoard.receiveAttack([1, 1]);
+
+console.log(playerOne.makeRandomMove());
+console.log(playerOneBoard.missingShots);
 
 // Testing script
 // GameboardModule.createBoard();

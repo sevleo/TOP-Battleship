@@ -1,34 +1,27 @@
-const PlayerModule = (() => {
-  const playerOne = {
-    type: "player",
+function Player(b, t) {
+  const player = {
+    type: t,
+    board: b,
   };
-
-  const playerTwo = {
-    type: "computer",
-  };
-
-  // eslint-disable-next-line prefer-const
-  let currentTurn = playerOne;
-
-  function switchTurn() {
-    if (currentTurn === playerOne) {
-      currentTurn = playerTwo;
-    } else {
-      currentTurn = playerOne;
-    }
-  }
 
   function makeRandomMove() {
-    return Math.floor(Math.random() * 100);
+    const randomValueCoordinates =
+      player.board.board.vertices[Math.floor(Math.random() * 100)].coordinates;
+
+    if (player.board.missingShots.length === 100) {
+      return null;
+    }
+
+    if (!player.board.missingShots.includes(randomValueCoordinates)) {
+      return randomValueCoordinates;
+    }
+    return makeRandomMove();
   }
 
   return {
-    playerOne,
-    playerTwo,
-    currentTurn,
-    switchTurn,
+    player,
     makeRandomMove,
   };
-})();
+}
 
-export default PlayerModule;
+export default Player;
