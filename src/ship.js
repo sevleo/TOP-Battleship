@@ -5,6 +5,7 @@ const ShipModule = (() => {
       hitCount: 0,
       coordinates: [],
       length: shipLength,
+      position: "h",
 
       hit() {
         ship.hitCount += 1;
@@ -19,6 +20,15 @@ const ShipModule = (() => {
 
       assignCoordinates(...args) {
         ship.coordinates = args;
+
+        // Determine if ship position is horizontal or vertical
+        if (ship.coordinates.length === 1) {
+          this.position = "h";
+        } else if (ship.coordinates[0][0] === ship.coordinates[1][0]) {
+          this.position = "h";
+        } else {
+          this.position = "v";
+        }
       },
     };
 
