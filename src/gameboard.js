@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-continue */
 import ShipModule from "./ship";
 import Graph from "./DS_Graph";
 
@@ -75,8 +77,40 @@ function GameboardModule() {
   }
 
   // Fill the Ships array
-  function createShips(args) {
-    args.forEach((element) => {
+  function createShips() {
+    const shipsConfig = [
+      {
+        shipLength: 1,
+      },
+      {
+        shipLength: 1,
+      },
+      {
+        shipLength: 1,
+      },
+      {
+        shipLength: 1,
+      },
+      {
+        shipLength: 2,
+      },
+      {
+        shipLength: 2,
+      },
+      {
+        shipLength: 2,
+      },
+      {
+        shipLength: 3,
+      },
+      {
+        shipLength: 3,
+      },
+      {
+        shipLength: 4,
+      },
+    ];
+    shipsConfig.forEach((element) => {
       const ship = ShipModule.createShip(element.shipLength);
       ships.push(ship);
     });

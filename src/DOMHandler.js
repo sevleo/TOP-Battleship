@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-cycle
+import addEventListeners from "./eventManager";
+
 /* eslint-disable prefer-const */
 const DOMHandler = (() => {
   const body = document.querySelector("body");
@@ -19,6 +22,22 @@ const DOMHandler = (() => {
           type: "div",
           class: "content",
           childrenElements: [
+            {
+              type: "div",
+              class: "commands",
+              childrenElements: [
+                {
+                  type: "div",
+                  class: "randomize",
+                  textContent: "randomize",
+                },
+                {
+                  type: "div",
+                  class: "start-game",
+                  textContent: "start",
+                },
+              ],
+            },
             {
               type: "div",
               class: "boards",
@@ -376,6 +395,7 @@ const DOMHandler = (() => {
     createPageLayout(body, staticLayoutElements);
     createBoardCells();
     drawShips();
+    addEventListeners();
   }
 
   return {
