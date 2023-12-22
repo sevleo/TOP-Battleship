@@ -39,11 +39,29 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
-  width: 820px;
-  height: 400px;
+  width: 100%;
   gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .boards > div {
-  border: 0.5px solid black;
+  width: 400px;
+  height: 400px;
+  outline: 0.5px solid black;
+  /* align-self: center; */
+  justify-self: center;
+}
+
+.playerOne-board,
+.playerTwo-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.playerOne-board > div,
+.playerTwo-board > div {
+  border: 0.1px solid black;
 }

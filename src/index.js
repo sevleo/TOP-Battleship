@@ -27,11 +27,10 @@ const playerTwoBoard = GameboardModule();
 playerTwoBoard.createBoard();
 playerTwoBoard.createShips(ships);
 
-const playerOne = Player(playerOneBoard, "player");
-playerOneBoard.receiveAttack([1, 1]);
+DOMHandler.playerOneBoard = playerOneBoard.board.vertices;
+DOMHandler.playerTwoBoard = playerTwoBoard.board.vertices;
 
-console.log(playerOne.makeRandomMove());
-console.log(playerOneBoard.missingShots);
+DOMHandler.createDom();
 
 // Testing script
 // GameboardModule.createBoard();

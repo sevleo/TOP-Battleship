@@ -1,5 +1,8 @@
+/* eslint-disable prefer-const */
 const DOMHandler = (() => {
   const body = document.querySelector("body");
+  let playerOneBoard = null;
+  let playerTwoBoard = null;
 
   const staticLayoutElements = [
     {
@@ -34,7 +37,7 @@ const DOMHandler = (() => {
     },
   ];
 
-  function createDom(parent, tree) {
+  function createPageLayout(parent, tree) {
     tree.forEach((element) => {
       const newElement = document.createElement(element.type);
       if (element.class) {
@@ -42,14 +45,36 @@ const DOMHandler = (() => {
       }
       parent.append(newElement);
       if (element.childrenElements) {
-        createDom(newElement, element.childrenElements);
+        createPageLayout(newElement, element.childrenElements);
       }
     });
   }
 
-  createDom(body, staticLayoutElements);
+  function createBoardCells() {
+    const playerOneBoardDiv = document.querySelector(".playerOne-board");
+    const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
+
+    DOMHandler.playerOneBoard.forEach((element) => {
+      const newCell = document.createElement("div");
+      newCell.classList.add(element.coordinates);
+      playerOneBoardDiv.append(newCell);
+    });
+
+    DOMHandler.playerTwoBoard.forEach((element) => {
+      const newCell = document.createElement("div");
+      newCell.classList.add(element.coordinates);
+      playerTwoBoardDiv.append(newCell);
+    });
+  }
+
+  function createDom() {
+    createPageLayout(body, staticLayoutElements);
+    createBoardCells();
+  }
 
   return {
+    playerOneBoard,
+    playerTwoBoard,
     createDom,
   };
 })();
