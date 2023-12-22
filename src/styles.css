@@ -50,8 +50,7 @@ body {
 .boards > div {
   width: 400px;
   height: 400px;
-  outline: 0.5px solid black;
-  /* align-self: center; */
+  outline: 0.5px solid rgb(118, 118, 118, 0.6);
   justify-self: center;
 }
 
@@ -63,5 +62,9 @@ body {
 
 .playerOne-board > div,
 .playerTwo-board > div {
-  border: 0.1px solid black;
+  border: 0.5px solid rgba(118, 118, 118, 0.6);
+}
+
+.ship {
+  background-color: blue;
 }

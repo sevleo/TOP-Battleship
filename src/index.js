@@ -23,12 +23,27 @@ const playerOneBoard = GameboardModule();
 playerOneBoard.createBoard();
 playerOneBoard.createShips(ships);
 
+playerOneBoard.ships[0].assignCoordinates([3, 2]);
+playerOneBoard.ships[1].assignCoordinates([5, 1], [5, 2]);
+playerOneBoard.ships[2].assignCoordinates([8, 6], [8, 7], [8, 8]);
+playerOneBoard.ships[3].assignCoordinates([4, 4], [5, 4], [6, 4], [7, 4]);
+
 const playerTwoBoard = GameboardModule();
 playerTwoBoard.createBoard();
 playerTwoBoard.createShips(ships);
 
+playerTwoBoard.ships[0].assignCoordinates([9, 5]);
+playerTwoBoard.ships[1].assignCoordinates([4, 5], [4, 6]);
+playerTwoBoard.ships[2].assignCoordinates([3, 3], [3, 2], [3, 1]);
+playerTwoBoard.ships[3].assignCoordinates([7, 4], [7, 5], [7, 6], [7, 7]);
+
 DOMHandler.playerOneBoard = playerOneBoard.board.vertices;
+DOMHandler.playerOneShips = playerOneBoard.ships;
+
 DOMHandler.playerTwoBoard = playerTwoBoard.board.vertices;
+DOMHandler.playerTwoShips = playerTwoBoard.ships;
+
+console.log(DOMHandler);
 
 DOMHandler.createDom();
 

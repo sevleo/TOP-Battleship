@@ -3,6 +3,8 @@ const DOMHandler = (() => {
   const body = document.querySelector("body");
   let playerOneBoard = null;
   let playerTwoBoard = null;
+  let playerOneShips = null;
+  let playerTwoShips = null;
 
   const staticLayoutElements = [
     {
@@ -67,14 +69,36 @@ const DOMHandler = (() => {
     });
   }
 
+  function drawShips() {
+    DOMHandler.playerOneShips.forEach((ship) => {
+      ship.coordinates.forEach((c) => {
+        const className = `${c[0]},${c[1]}`;
+        const parentDiv = document.querySelector(".playerOne-board");
+        const div = parentDiv.querySelector(`[class="${className}"]`);
+        div.classList.add("ship");
+      });
+    });
+    DOMHandler.playerTwoShips.forEach((ship) => {
+      ship.coordinates.forEach((c) => {
+        const className = `${c[0]},${c[1]}`;
+        const parentDiv = document.querySelector(".playerTwo-board");
+        const div = parentDiv.querySelector(`[class="${className}"]`);
+        div.classList.add("ship");
+      });
+    });
+  }
+
   function createDom() {
     createPageLayout(body, staticLayoutElements);
     createBoardCells();
+    drawShips();
   }
 
   return {
     playerOneBoard,
     playerTwoBoard,
+    playerOneShips,
+    playerTwoShips,
     createDom,
   };
 })();
