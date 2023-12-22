@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import DOMHandler from "./DOMHandler";
 import GameboardModule from "./gameboard";
 
@@ -23,6 +24,8 @@ function gameLoop() {
   DOMHandler.playerTwoShips = playerTwoBoard.ships;
 
   DOMHandler.createDom();
+  console.log(playerOneBoard);
+  console.log(playerTwoBoard);
 }
 
 export default gameLoop;

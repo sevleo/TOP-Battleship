@@ -132,7 +132,15 @@ body {
 }
 
 .ship:hover {
-  cursor: grab;
+  cursor: move;
+}
+
+/* [draggable="true"] {
+  cursor: move;
+} */
+
+[droppable="true"] {
+  /* border: 2px dashed #aaa; */
 }
 
 .mark_col {
