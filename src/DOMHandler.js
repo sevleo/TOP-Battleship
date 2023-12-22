@@ -59,7 +59,6 @@ const DOMHandler = (() => {
     DOMHandler.playerOneBoard.forEach((element) => {
       const newCell = document.createElement("div");
       newCell.classList.add(element.coordinates);
-      console.log(newCell.classList[0]);
       playerOneBoardDiv.append(newCell);
 
       if (newCell.classList[0] === "1,1") {

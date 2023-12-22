@@ -118,6 +118,78 @@ function GameboardModule() {
     return ships.every((ship) => ship.isSunk());
   }
 
+  function positionShips() {
+    ships.sort((a, b) => b.length - a.length);
+    ships.forEach((ship) => {
+      const orientation = Math.floor(Math.random() * 2) === 0 ? "v" : "h";
+      ship.position = orientation;
+      //   console.log(ship);
+
+      const filteredBoard = board.vertices.filter(
+        (obj) => obj.occupied === false,
+      );
+
+      if (filteredBoard.length > 0) {
+        let positionFound = false;
+        while (!positionFound) {
+          // eslint-disable-next-line prefer-const
+          let position = [];
+          // eslint-disable-next-line prefer-const
+          let positionCoordinates = [];
+          const firstCellIndex = Math.floor(
+            Math.random() * filteredBoard.length,
+          );
+          const firstCellObject = filteredBoard[firstCellIndex];
+          positionCoordinates.push(firstCellObject.coordinates);
+          position.push(firstCellObject);
+          firstCellObject.occupied = true;
+          //   console.log(position);
+          for (let i = 1; i < ship.length; i += 1) {
+            const nextCellObjectCoordinates =
+              ship.position === "v"
+                ? [
+                    firstCellObject.coordinates[0] + i,
+                    firstCellObject.coordinates[1],
+                  ]
+                : [
+                    firstCellObject.coordinates[0],
+                    firstCellObject.coordinates[1] + i,
+                  ];
+            // console.log(nextCellObjectCoordinates);
+            const nextCellObject = board.vertices.filter(
+              (obj) =>
+                JSON.stringify(obj.coordinates) ===
+                JSON.stringify(nextCellObjectCoordinates),
+            );
+            // console.log(nextCellObject[0]);
+            if (nextCellObject[0]) {
+              if (nextCellObject[0].occupied === false) {
+                positionCoordinates.push(nextCellObject[0].coordinates);
+                position.push(nextCellObject[0]);
+                nextCellObject[0].occupied = true;
+              } else {
+                continue;
+              }
+            } else {
+              continue;
+            }
+          }
+
+          if (position.length === ship.length) {
+            ship.assignCoordinates(...positionCoordinates);
+
+            position.forEach((p) => {
+              p.adjacencyList.forEach((adj) => {
+                adj.occupied = true;
+              });
+            });
+            positionFound = true;
+          }
+        }
+      }
+    });
+  }
+
   return {
     board,
     ships,
@@ -126,6 +198,7 @@ function GameboardModule() {
     createShips,
     receiveAttack,
     allShipsSunk,
+    positionShips,
   };
 }
 

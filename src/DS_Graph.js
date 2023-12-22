@@ -4,6 +4,7 @@ class Vertex {
   constructor(coordinates) {
     this.coordinates = coordinates;
     this.adjacencyList = [];
+    this.occupied = false;
   }
 
   addNeighbor(vertex) {
