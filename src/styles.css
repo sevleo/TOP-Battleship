@@ -38,7 +38,7 @@ body {
 .boards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr 50px;
   width: 100%;
   gap: 20px;
   justify-content: center;
@@ -47,10 +47,35 @@ body {
   padding-right: 20px;
 }
 
-.boards > div {
+.boards > .playerOne-board,
+.boards > .playerTwo-board {
   width: 400px;
   height: 400px;
   outline: 0.5px solid rgb(118, 118, 118, 0.6);
+  justify-self: center;
+}
+
+.playerOne-board {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.playerTwo-board {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.player-one-board-name {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  align-self: flex-start;
+  justify-self: center;
+}
+
+.player-two-board-name {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  align-self: flex-start;
   justify-self: center;
 }
 

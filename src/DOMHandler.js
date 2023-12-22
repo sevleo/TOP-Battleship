@@ -31,6 +31,16 @@ const DOMHandler = (() => {
                   type: "div",
                   class: "playerTwo-board",
                 },
+                {
+                  type: "div",
+                  class: "player-one-board-name",
+                  textContent: "Your board",
+                },
+                {
+                  type: "div",
+                  class: "player-two-board-name",
+                  textContent: "Opponent's board",
+                },
               ],
             },
           ],
@@ -44,6 +54,9 @@ const DOMHandler = (() => {
       const newElement = document.createElement(element.type);
       if (element.class) {
         newElement.classList.add(element.class);
+      }
+      if (element.textContent) {
+        newElement.textContent = element.textContent;
       }
       parent.append(newElement);
       if (element.childrenElements) {
