@@ -364,6 +364,7 @@ const DOMHandler = (() => {
       shipDiv.classList.add("ship");
       shipDiv.classList.add("draggable");
       // shipDiv.setAttribute("draggable", true);
+      // shipDiv.setAttribute("draggable", true);
 
       if (ship.position === "h") {
         const width = 40 * ship.length;

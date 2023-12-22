@@ -112,6 +112,7 @@ body {
 .playerTwo-board > div {
   outline: 0.5px solid rgba(118, 118, 118, 0.6);
   position: relative;
+  z-index: 1;
 }
 
 .playerTwo-board > .ship {
@@ -123,20 +124,34 @@ body {
 }
 
 .ship {
-  z-index: 2;
+  /* z-index: 2; */
   position: absolute;
   left: 0;
   top: 0;
-  background-color: rgba(0, 0, 255, 0.3);
+  background-color: rgba(0, 0, 255, 0.1);
   outline: 1px solid blue;
 }
 
-.ship:hover {
-  cursor: move;
+.draggable {
+  cursor: move !important;
+  z-index: 5;
 }
 
-/* [draggable="true"] {
+/* .ship:hover {
   cursor: move;
+} */
+
+[draggable="true"] {
+  cursor: move !important;
+}
+
+[draggable="true"]:hover {
+  z-index: 9999;
+  cursor: move !important;
+}
+
+/* .draggable {
+  cursor: alias;
 } */
 
 [droppable="true"] {
