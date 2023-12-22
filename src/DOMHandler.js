@@ -59,26 +59,267 @@ const DOMHandler = (() => {
     DOMHandler.playerOneBoard.forEach((element) => {
       const newCell = document.createElement("div");
       newCell.classList.add(element.coordinates);
+      console.log(newCell.classList[0]);
       playerOneBoardDiv.append(newCell);
+
+      if (newCell.classList[0] === "1,1") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "A";
+        newCell.append(markCol);
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "1";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "1,2") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "B";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,3") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "C";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,4") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "D";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,5") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "E";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,6") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "F";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,7") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "G";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,8") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "H";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,9") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "I";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,10") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "J";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "2,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "2";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "3,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "3";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "4,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "4";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "5,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "5";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "6,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "6";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "7,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "7";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "8,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "8";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "2,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "2";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "9,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "9";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "10,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "10";
+        newCell.append(markRow);
+      }
     });
 
     DOMHandler.playerTwoBoard.forEach((element) => {
       const newCell = document.createElement("div");
       newCell.classList.add(element.coordinates);
       playerTwoBoardDiv.append(newCell);
+      if (newCell.classList[0] === "1,1") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "A";
+        newCell.append(markCol);
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "1";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "1,2") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "B";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,3") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "C";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,4") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "D";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,5") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "E";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,6") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "F";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,7") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "G";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,8") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "H";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,9") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "I";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "1,10") {
+        const markCol = document.createElement("div");
+        markCol.classList.add("mark_col");
+        markCol.textContent = "J";
+        newCell.append(markCol);
+      }
+      if (newCell.classList[0] === "2,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "2";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "3,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "3";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "4,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "4";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "5,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "5";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "6,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "6";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "7,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "7";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "8,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "8";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "2,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "2";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "9,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "9";
+        newCell.append(markRow);
+      }
+      if (newCell.classList[0] === "10,1") {
+        const markRow = document.createElement("div");
+        markRow.classList.add("mark_row");
+        markRow.textContent = "10";
+        newCell.append(markRow);
+      }
     });
   }
 
   function drawShips() {
-    // DOMHandler.playerOneShips.forEach((ship) => {
-    //   ship.coordinates.forEach((c) => {
-    //     const className = `${c[0]},${c[1]}`;
-    //     const parentDiv = document.querySelector(".playerOne-board");
-    //     const div = parentDiv.querySelector(`[class="${className}"]`);
-    //     div.classList.add("ship");
-    //   });
-    // });
-
     DOMHandler.playerOneShips.forEach((ship) => {
       const firstCellClassName = `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`;
       const parentDiv = document.querySelector(".playerOne-board");

@@ -86,3 +86,22 @@ body {
 .ship:hover {
   cursor: grab;
 }
+
+.mark_col {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: -20px;
+  font-size: 10px;
+  user-select: none;
+}
+
+.mark_row {
+  position: absolute;
+  text-align: right;
+  width: 50%;
+  left: -30px;
+  top: 10px;
+  font-size: 10px;
+  user-select: none;
+}
