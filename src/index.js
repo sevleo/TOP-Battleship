@@ -1,11 +1,7 @@
 import "./styles.css";
 import GameboardModule from "./gameboard";
 import Player from "./player";
-
-const body = document.querySelector("body");
-const test = document.createElement("div");
-test.textContent = "Hello World!";
-body.append(test);
+import DOMHandler from "./DOMHandler";
 
 const ships = [
   {
