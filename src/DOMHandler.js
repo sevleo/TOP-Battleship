@@ -204,12 +204,6 @@ const DOMHandler = (() => {
           markRow.textContent = "8";
           newCell.append(markRow);
         }
-        if (newCell.classList[0] === "2,1") {
-          const markRow = document.createElement("div");
-          markRow.classList.add("mark_row");
-          markRow.textContent = "2";
-          newCell.append(markRow);
-        }
         if (newCell.classList[0] === "9,1") {
           const markRow = document.createElement("div");
           markRow.classList.add("mark_row");

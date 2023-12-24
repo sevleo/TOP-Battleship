@@ -6,6 +6,9 @@
   box-sizing: border-box;
   font-family: "Nunito", sans-serif;
   font-weight: 300;
+  /* pointer-events: none;
+  touch-action: none; */
+  user-select: none;
 }
 
 body {
@@ -45,7 +48,7 @@ body {
 }
 
 .commands > div {
-  user-select: none;
+  /* user-select: none; */
   cursor: pointer;
   font-weight: 100;
   font-size: 20px;
@@ -135,6 +138,8 @@ body {
 .draggable {
   cursor: move !important;
   z-index: 5;
+  /* pointer-events: all;
+  touch-action: all; */
 }
 
 /* .ship:hover {
@@ -156,6 +161,7 @@ body {
 
 [droppable="true"] {
   /* border: 2px dashed #aaa; */
+  /* pointer-events: all; */
 }
 
 .mark_col {

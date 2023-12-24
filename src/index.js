@@ -38,6 +38,7 @@ console.log(draggableElement);
 let isDragging = false;
 let offSetX;
 let offSetY;
+const mouseDownOffset = 0;
 
 draggableElement.addEventListener("mousedown", (event) => {
   isDragging = true;
@@ -46,38 +47,52 @@ draggableElement.addEventListener("mousedown", (event) => {
   draggableElement.style.zIndex = 0;
   offSetX = event.clientX;
   offSetY = event.clientY;
+
+  const parentRect = draggableElement.parentElement.getBoundingClientRect();
+  console.log(parentRect);
+
+  console.log(offSetX);
+  console.log(offSetY);
+
+  console.log(draggableElement.style.width);
+  console.log(draggableElement.style.height);
 });
+
+let elementBelow = null;
 
 document.addEventListener("mousemove", (event) => {
   if (isDragging) {
+    console.log(draggableElement);
     const draggingElement = event.target;
 
     const elementsBelow = document.elementsFromPoint(
       event.clientX,
       event.clientY,
     );
-    let elementBelow = null;
+
     elementsBelow.forEach((element) => {
       if (element.classList.contains("cell")) {
         elementBelow = element;
       }
     });
-
-    if (elementBelow) {
-      // Perform actions or checks with the elementBelow
-      console.log("Element below:", elementBelow);
-    }
-    // event.preventDefault();
     draggableElement.style.left = `${event.clientX - offSetX}px`;
     draggableElement.style.top = `${event.clientY - offSetY}px`;
   }
 });
 
 document.addEventListener("mouseup", () => {
+  isDragging = false;
+
+  if (elementBelow) {
+    elementBelow.append(draggableElement);
+  }
+
   draggableElement.style.left = 0;
   draggableElement.style.top = 0;
-  isDragging = false;
   draggableElement.style.zIndex = 5;
+
+  offSetX = null;
+  offSetY = null;
 });
 
 // document.addEventListener("mousemove", (event) => {
