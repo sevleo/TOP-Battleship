@@ -91,6 +91,7 @@ const DOMHandler = (() => {
     DOMHandler.playerOneBoard.forEach((element) => {
       const newCell = document.createElement("div");
       newCell.classList.add(element.coordinates);
+      newCell.classList.add("cell");
       newCell.setAttribute("droppable", true);
 
       playerOneBoardDiv.append(newCell);
@@ -359,7 +360,9 @@ const DOMHandler = (() => {
     DOMHandler.playerOneShips.forEach((ship) => {
       const firstCellClassName = `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`;
       const parentDiv = document.querySelector(".playerOne-board");
-      const div = parentDiv.querySelector(`[class="${firstCellClassName}"]`);
+      const div = parentDiv.querySelector(
+        `[class="${firstCellClassName} cell"]`,
+      );
       const shipDiv = document.createElement("div");
       shipDiv.classList.add("ship");
       shipDiv.classList.add("draggable");

@@ -52,10 +52,16 @@ document.addEventListener("mousemove", (event) => {
   if (isDragging) {
     const draggingElement = event.target;
 
-    const elementBelow = document.elementFromPoint(
+    const elementsBelow = document.elementsFromPoint(
       event.clientX,
       event.clientY,
     );
+    let elementBelow = null;
+    elementsBelow.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        elementBelow = element;
+      }
+    });
 
     if (elementBelow) {
       // Perform actions or checks with the elementBelow
@@ -73,3 +79,19 @@ document.addEventListener("mouseup", () => {
   isDragging = false;
   draggableElement.style.zIndex = 5;
 });
+
+// document.addEventListener("mousemove", (event) => {
+//   let elementBelow = document.elementFromPoint(event.clientX, event.clientY);
+
+//   if (elementBelow.classList.contains("ship")) {
+//     elementBelow = elementBelow.parentElement;
+//   }
+
+//   if (elementBelow) {
+//     // Perform actions or checks with the elementBelow
+//     console.log("Element below:", elementBelow);
+//   }
+//   // event.preventDefault();
+//   draggableElement.style.left = `${event.clientX - offSetX}px`;
+//   draggableElement.style.top = `${event.clientY - offSetY}px`;
+// });

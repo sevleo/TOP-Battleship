@@ -112,7 +112,7 @@ body {
 .playerTwo-board > div {
   outline: 0.5px solid rgba(118, 118, 118, 0.6);
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .playerTwo-board > .ship {
