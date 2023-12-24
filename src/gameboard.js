@@ -157,7 +157,6 @@ function GameboardModule() {
     ships.forEach((ship) => {
       const orientation = Math.floor(Math.random() * 2) === 0 ? "v" : "h";
       ship.position = orientation;
-      //   console.log(ship);
 
       const filteredBoard = board.vertices.filter(
         (obj) => obj.occupied === false,
@@ -176,7 +175,6 @@ function GameboardModule() {
           const firstCellObject = filteredBoard[firstCellIndex];
           positionCoordinates.push(firstCellObject.coordinates);
           position.push(firstCellObject);
-          firstCellObject.occupied = true;
           //   console.log(position);
           for (let i = 1; i < ship.length; i += 1) {
             const nextCellObjectCoordinates =
@@ -200,7 +198,6 @@ function GameboardModule() {
               if (nextCellObject[0].occupied === false) {
                 positionCoordinates.push(nextCellObject[0].coordinates);
                 position.push(nextCellObject[0]);
-                nextCellObject[0].occupied = true;
               } else {
                 continue;
               }

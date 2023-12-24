@@ -3,42 +3,16 @@ import gameLoop from "./gameHandler";
 
 gameLoop();
 
-// const draggableElements = document.getElementsByClassName("draggable");
-// const draggableElementsArray = Array.from(draggableElements);
-
-// draggableElementsArray.forEach((draggable) => {
-//   console.log(draggable);
-//   draggable.addEventListener("dragstart", (event) => {
-//     console.log("test");
-//     console.log(event);
-//   });
-
-//   draggable.addEventListener("dragend", (event) => {
-//     console.log(event);
-//   });
-// });
-
-// const droppableElements = document.querySelectorAll("[droppable]");
-
-// droppableElements.forEach((droppable) => {
-//   droppable.addEventListener("dragover", (event) => {
-//     event.preventDefault();
-//   });
-
-//   droppable.addEventListener("drop", (event) => {
-//     event.preventDefault();
-//   });
-// });
-
 const draggableElements = document.getElementsByClassName("draggable");
 const draggableElement = draggableElements[0];
-draggableElement.style.background = "red";
+// draggableElement.style.background = "red";
 console.log(draggableElement);
 
 let isDragging = false;
 let offSetX;
 let offSetY;
-const mouseDownOffset = 0;
+let mouseDownOffsetHor = 0;
+let mouseDownOffsetVer = 0;
 
 draggableElement.addEventListener("mousedown", (event) => {
   isDragging = true;
@@ -48,35 +22,46 @@ draggableElement.addEventListener("mousedown", (event) => {
   offSetX = event.clientX;
   offSetY = event.clientY;
 
+  draggableElement.classList.add("dragging");
+
   const parentRect = draggableElement.parentElement.getBoundingClientRect();
-  console.log(parentRect);
 
-  console.log(offSetX);
-  console.log(offSetY);
-
-  console.log(draggableElement.style.width);
-  console.log(draggableElement.style.height);
+  if (offSetX > parentRect.x + 120) {
+    mouseDownOffsetHor = 120;
+  } else if (offSetX > parentRect.x + 80) {
+    mouseDownOffsetHor = 80;
+  } else if (offSetX > parentRect.x + 40) {
+    mouseDownOffsetHor = 40;
+  } else if (offSetY > parentRect.y + 120) {
+    mouseDownOffsetVer = 120;
+  } else if (offSetY > parentRect.y + 80) {
+    mouseDownOffsetVer = 80;
+  } else if (offSetY > parentRect.y + 40) {
+    mouseDownOffsetVer = 40;
+  }
 });
 
 let elementBelow = null;
 
 document.addEventListener("mousemove", (event) => {
   if (isDragging) {
-    console.log(draggableElement);
-    const draggingElement = event.target;
-
     const elementsBelow = document.elementsFromPoint(
-      event.clientX,
-      event.clientY,
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer,
     );
 
     elementsBelow.forEach((element) => {
       if (element.classList.contains("cell")) {
-        elementBelow = element;
+        if (element.getAttribute("droppable") === "true") {
+          elementBelow = element;
+        }
       }
     });
     draggableElement.style.left = `${event.clientX - offSetX}px`;
     draggableElement.style.top = `${event.clientY - offSetY}px`;
+    if (elementBelow) {
+      elementBelow.classList.add("droppable-highlight");
+    }
   }
 });
 
@@ -90,23 +75,8 @@ document.addEventListener("mouseup", () => {
   draggableElement.style.left = 0;
   draggableElement.style.top = 0;
   draggableElement.style.zIndex = 5;
+  draggableElement.classList.remove("dragging");
 
   offSetX = null;
   offSetY = null;
 });
-
-// document.addEventListener("mousemove", (event) => {
-//   let elementBelow = document.elementFromPoint(event.clientX, event.clientY);
-
-//   if (elementBelow.classList.contains("ship")) {
-//     elementBelow = elementBelow.parentElement;
-//   }
-
-//   if (elementBelow) {
-//     // Perform actions or checks with the elementBelow
-//     console.log("Element below:", elementBelow);
-//   }
-//   // event.preventDefault();
-//   draggableElement.style.left = `${event.clientX - offSetX}px`;
-//   draggableElement.style.top = `${event.clientY - offSetY}px`;
-// });

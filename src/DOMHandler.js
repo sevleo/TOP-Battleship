@@ -92,7 +92,11 @@ const DOMHandler = (() => {
       const newCell = document.createElement("div");
       newCell.classList.add(element.coordinates);
       newCell.classList.add("cell");
-      newCell.setAttribute("droppable", true);
+      if (element.occupied) {
+        newCell.setAttribute("droppable", false);
+      } else {
+        newCell.setAttribute("droppable", true);
+      }
 
       playerOneBoardDiv.append(newCell);
 
@@ -355,8 +359,9 @@ const DOMHandler = (() => {
       const firstCellClassName = `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`;
       const parentDiv = document.querySelector(".playerOne-board");
       const div = parentDiv.querySelector(
-        `[class="${firstCellClassName} cell"]`,
+        `[class*="${firstCellClassName}"].cell`,
       );
+
       const shipDiv = document.createElement("div");
       shipDiv.classList.add("ship");
       shipDiv.classList.add("draggable");
@@ -382,7 +387,6 @@ const DOMHandler = (() => {
         ).filter((elem) => elem.classList.contains(className));
         shipCells.forEach((element) => {
           element.classList.add("ship-cell");
-          // element.setAttribute("droppable", false);
         });
       });
     });
