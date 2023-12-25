@@ -3,12 +3,14 @@ import "./styles.css";
 import DOMHandler from "./DOMHandler";
 import GameboardModule from "./gameboard";
 
+let playerOneBoard = null;
+
 function gameLoop() {
   const main = document.querySelector(".main");
   if (main) {
     main.remove();
   }
-  const playerOneBoard = GameboardModule();
+  playerOneBoard = GameboardModule();
   playerOneBoard.createBoard();
   playerOneBoard.createShips();
   playerOneBoard.positionShips();
@@ -26,7 +28,7 @@ function gameLoop() {
 
   DOMHandler.createDom();
   console.log(playerOneBoard);
-  console.log(playerTwoBoard);
+  //   console.log(playerTwoBoard);
 }
 
 gameLoop();
@@ -89,27 +91,272 @@ document.addEventListener("mousemove", (event) => {
     });
     draggableElement.style.left = `${event.clientX - offSetX}px`;
     draggableElement.style.top = `${event.clientY - offSetY}px`;
-
-    if (draggableElementRect.width === 80) {
-      const elementsBelowTwo = document.elementsFromPoint(
-        event.clientX - mouseDownOffsetHor + 40,
-        event.clientY - mouseDownOffsetVer,
-      );
-      elementsBelowTwo.forEach((element) => {
-        if (element.classList.contains("cell")) {
-          console.log(element);
-          console.log(element.classList[0]);
-        }
-      });
-    }
   }
 });
 
-document.addEventListener("mouseup", () => {
+document.addEventListener("mouseup", (event) => {
   isDragging = false;
 
+  if (draggableElementRect.width === 80) {
+    const elementsBelowTwo = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 40,
+      event.clientY - mouseDownOffsetVer,
+    );
+
+    elementsBelowTwo.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  if (draggableElementRect.width === 120) {
+    const elementsBelowTwo = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 40,
+      event.clientY - mouseDownOffsetVer,
+    );
+    const elementsBelowThree = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 80,
+      event.clientY - mouseDownOffsetVer,
+    );
+    elementsBelowTwo.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+    elementsBelowThree.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  if (draggableElementRect.width === 160) {
+    const elementsBelowTwo = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 40,
+      event.clientY - mouseDownOffsetVer,
+    );
+    const elementsBelowThree = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 80,
+      event.clientY - mouseDownOffsetVer,
+    );
+    const elementsBelowFour = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 120,
+      event.clientY - mouseDownOffsetVer,
+    );
+
+    elementsBelowTwo.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+
+    elementsBelowThree.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+
+    elementsBelowFour.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  if (draggableElementRect.height === 80) {
+    const elementsBelowTwo = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 40,
+    );
+
+    elementsBelowTwo.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  if (draggableElementRect.height === 120) {
+    const elementsBelowTwo = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 40,
+    );
+    const elementsBelowThree = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 80,
+    );
+    elementsBelowTwo.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+    elementsBelowThree.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  if (draggableElementRect.height === 160) {
+    const elementsBelowTwo = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 40,
+    );
+    const elementsBelowThree = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 80,
+    );
+    const elementsBelowFour = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 120,
+    );
+
+    elementsBelowTwo.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+
+    elementsBelowThree.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+
+    elementsBelowFour.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        const className = element.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+        vertex.adjacencyList.forEach((adjacency) => {
+          if (adjacency.occupiedByShip === true) {
+            if (elementBelow) {
+              elementBelow.setAttribute("droppable", false);
+            }
+          }
+        });
+      }
+    });
+  }
+
   if (elementBelow) {
-    elementBelow.append(draggableElement);
+    console.log(elementBelow);
+    console.log(elementBelow.getAttribute("droppable"));
+    if (elementBelow.getAttribute("droppable") === "true") {
+      elementBelow.append(draggableElement);
+    }
   }
 
   draggableElement.style.left = 0;

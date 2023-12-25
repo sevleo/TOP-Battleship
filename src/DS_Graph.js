@@ -5,6 +5,7 @@ class Vertex {
     this.coordinates = coordinates;
     this.adjacencyList = [];
     this.occupied = false;
+    this.occupiedByShip = false;
   }
 
   addNeighbor(vertex) {

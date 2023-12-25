@@ -19,6 +19,7 @@ function GameboardModule() {
 
   // Find the vertex object matching the given coordinates
   function findVertextObjectByCoordinates(coordinates) {
+    // console.log(coordinates);
     const foundVertex = board.vertices.find(
       (vertex) =>
         JSON.stringify(vertex.coordinates) === JSON.stringify(coordinates),
@@ -80,31 +81,13 @@ function GameboardModule() {
   function createShips() {
     const shipsConfig = [
       {
-        shipLength: 1,
-      },
-      {
-        shipLength: 1,
-      },
-      {
-        shipLength: 1,
-      },
-      {
-        shipLength: 1,
-      },
-      {
         shipLength: 2,
       },
       {
         shipLength: 2,
       },
       {
-        shipLength: 2,
-      },
-      {
-        shipLength: 3,
-      },
-      {
-        shipLength: 3,
+        shipLength: 4,
       },
       {
         shipLength: 4,
@@ -211,6 +194,7 @@ function GameboardModule() {
 
             position.forEach((p) => {
               p.occupied = true;
+              p.occupiedByShip = true;
               p.adjacencyList.forEach((adj) => {
                 adj.occupied = true;
               });
@@ -231,6 +215,7 @@ function GameboardModule() {
     receiveAttack,
     allShipsSunk,
     positionShips,
+    findVertextObjectByCoordinates,
   };
 }
 
