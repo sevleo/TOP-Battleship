@@ -118,7 +118,7 @@ body {
   /* z-index: 1; */
 }
 
-.playerTwo-board > .ship {
+.playerTwo-board > .ship-cell {
   background-color: rgba(0, 0, 255, 0.3);
 }
 

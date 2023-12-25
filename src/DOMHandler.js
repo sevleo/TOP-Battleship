@@ -226,6 +226,7 @@ const DOMHandler = (() => {
     DOMHandler.playerTwoBoard.forEach((element) => {
       const newCell = document.createElement("div");
       newCell.classList.add(element.coordinates);
+      newCell.classList.add("cell");
       playerTwoBoardDiv.append(newCell);
       if (newCell.classList[0] === "1,1") {
         const markCol = document.createElement("div");
@@ -395,8 +396,8 @@ const DOMHandler = (() => {
       ship.coordinates.forEach((c) => {
         const className = `${c[0]},${c[1]}`;
         const parentDiv = document.querySelector(".playerTwo-board");
-        const div = parentDiv.querySelector(`[class="${className}"]`);
-        div.classList.add("ship");
+        const div = parentDiv.querySelector(`[class*="${className}"]`);
+        div.classList.add("ship-cell");
       });
     });
   }

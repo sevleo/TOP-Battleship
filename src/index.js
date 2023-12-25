@@ -5,7 +5,7 @@ gameLoop();
 
 const draggableElements = document.getElementsByClassName("draggable");
 const draggableElement = draggableElements[0];
-// draggableElement.style.background = "red";
+draggableElement.style.background = "red";
 console.log(draggableElement);
 
 let isDragging = false;
@@ -79,4 +79,6 @@ document.addEventListener("mouseup", () => {
 
   offSetX = null;
   offSetY = null;
+  mouseDownOffsetHor = 0;
+  mouseDownOffsetVer = 0;
 });
