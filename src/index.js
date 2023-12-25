@@ -72,6 +72,109 @@ draggableElement.addEventListener("mousedown", (event) => {
   } else if (offSetY > parentRect.y + 40) {
     mouseDownOffsetVer = 40;
   }
+
+  const cells = [];
+  const cellsVertices = [];
+  const firstCell = draggableElement.parentElement;
+  let secondCell;
+  let thirdCell;
+  let fourthCell;
+
+  cells.push(firstCell);
+
+  if (draggableElementRect.width >= 80) {
+    const cellElements = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 40,
+      event.clientY - mouseDownOffsetVer,
+    );
+    cellElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        secondCell = element;
+        cells.push(secondCell);
+      }
+    });
+  }
+
+  if (draggableElementRect.width >= 120) {
+    const cellElements = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 80,
+      event.clientY - mouseDownOffsetVer,
+    );
+    cellElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        thirdCell = element;
+        cells.push(thirdCell);
+      }
+    });
+  }
+
+  if (draggableElementRect.width >= 160) {
+    const cellElements = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor + 120,
+      event.clientY - mouseDownOffsetVer,
+    );
+    cellElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        fourthCell = element;
+        cells.push(fourthCell);
+      }
+    });
+  }
+
+  if (draggableElementRect.height >= 80) {
+    const cellElements = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 40,
+    );
+    cellElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        secondCell = element;
+        cells.push(secondCell);
+      }
+    });
+  }
+
+  if (draggableElementRect.height >= 120) {
+    const cellElements = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 80,
+    );
+    cellElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        thirdCell = element;
+        cells.push(thirdCell);
+      }
+    });
+  }
+
+  if (draggableElementRect.height >= 160) {
+    const cellElements = document.elementsFromPoint(
+      event.clientX - mouseDownOffsetHor,
+      event.clientY - mouseDownOffsetVer + 120,
+    );
+    cellElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        fourthCell = element;
+        cells.push(fourthCell);
+      }
+    });
+  }
+
+  cells.forEach((cell) => {
+    cell.setAttribute("droppable", true);
+    console.log(cell);
+    const className = cell.classList[0];
+    const array = className.split(",").map(Number);
+    const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+    cellsVertices.push(vertex);
+  });
+  cellsVertices.forEach((cellVertex) => {
+    cellVertex.occupiedByShip = false;
+    cellVertex.occupied = false;
+    cellVertex.adjacencyList.forEach((adjacency) => {
+      adjacency.occupied = false;
+    });
+  });
 });
 
 let elementBelow = null;
