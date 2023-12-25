@@ -210,6 +210,7 @@ function GameboardModule() {
             ship.assignCoordinates(...positionCoordinates);
 
             position.forEach((p) => {
+              p.occupied = true;
               p.adjacencyList.forEach((adj) => {
                 adj.occupied = true;
               });

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import gameLoop from "./gameHandler";
+import gameLoop from ".";
 
 function addEventListeners() {
   const randomizeButton = document.querySelector(".randomize");

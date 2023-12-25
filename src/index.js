@@ -1,10 +1,41 @@
 import "./styles.css";
-import gameLoop from "./gameHandler";
+// eslint-disable-next-line import/no-cycle
+import DOMHandler from "./DOMHandler";
+import GameboardModule from "./gameboard";
+
+function gameLoop() {
+  const main = document.querySelector(".main");
+  if (main) {
+    main.remove();
+  }
+  const playerOneBoard = GameboardModule();
+  playerOneBoard.createBoard();
+  playerOneBoard.createShips();
+  playerOneBoard.positionShips();
+
+  const playerTwoBoard = GameboardModule();
+  playerTwoBoard.createBoard();
+  playerTwoBoard.createShips();
+  playerTwoBoard.positionShips();
+
+  DOMHandler.playerOneBoard = playerOneBoard.board.vertices;
+  DOMHandler.playerOneShips = playerOneBoard.ships;
+
+  DOMHandler.playerTwoBoard = playerTwoBoard.board.vertices;
+  DOMHandler.playerTwoShips = playerTwoBoard.ships;
+
+  DOMHandler.createDom();
+  console.log(playerOneBoard);
+  console.log(playerTwoBoard);
+}
 
 gameLoop();
 
+export default gameLoop;
+
 const draggableElements = document.getElementsByClassName("draggable");
 const draggableElement = draggableElements[0];
+const draggableElementRect = draggableElement.getBoundingClientRect();
 draggableElement.style.background = "red";
 console.log(draggableElement);
 
@@ -49,7 +80,6 @@ document.addEventListener("mousemove", (event) => {
       event.clientX - mouseDownOffsetHor,
       event.clientY - mouseDownOffsetVer,
     );
-
     elementsBelow.forEach((element) => {
       if (element.classList.contains("cell")) {
         if (element.getAttribute("droppable") === "true") {
@@ -59,8 +89,18 @@ document.addEventListener("mousemove", (event) => {
     });
     draggableElement.style.left = `${event.clientX - offSetX}px`;
     draggableElement.style.top = `${event.clientY - offSetY}px`;
-    if (elementBelow) {
-      elementBelow.classList.add("droppable-highlight");
+
+    if (draggableElementRect.width === 80) {
+      const elementsBelowTwo = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor + 40,
+        event.clientY - mouseDownOffsetVer,
+      );
+      elementsBelowTwo.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          console.log(element);
+          console.log(element.classList[0]);
+        }
+      });
     }
   }
 });
