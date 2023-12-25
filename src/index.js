@@ -75,6 +75,7 @@ draggableElement.addEventListener("mousedown", (event) => {
 
   const cells = [];
   const cellsVertices = [];
+  const cellsVerticesAdjacent = [];
   const firstCell = draggableElement.parentElement;
   let secondCell;
   let thirdCell;
@@ -162,7 +163,6 @@ draggableElement.addEventListener("mousedown", (event) => {
 
   cells.forEach((cell) => {
     cell.setAttribute("droppable", true);
-    console.log(cell);
     const className = cell.classList[0];
     const array = className.split(",").map(Number);
     const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
@@ -172,9 +172,36 @@ draggableElement.addEventListener("mousedown", (event) => {
     cellVertex.occupiedByShip = false;
     cellVertex.occupied = false;
     cellVertex.adjacencyList.forEach((adjacency) => {
-      adjacency.occupied = false;
+      if (!cellsVertices.includes(adjacency)) {
+        adjacency.occupied = false;
+        adjacency.adjacencyList.forEach((adj) => {
+          if (!cellsVertices.includes(adj)) {
+            if (adj.occupiedByShip) {
+              adjacency.occupied = true;
+            }
+          }
+        });
+        if (
+          adjacency.occupied === false &&
+          !cellsVerticesAdjacent.includes(adjacency)
+        ) {
+          cellsVerticesAdjacent.push(adjacency);
+        }
+      }
     });
   });
+
+  cellsVerticesAdjacent.forEach((vertex) => {
+    const className = `${vertex.coordinates[0]},${vertex.coordinates[1]}`;
+    const parentDiv = document.querySelector(".playerOne-board");
+    const div = parentDiv.querySelector(`[class*="${className}"].cell`);
+    div.setAttribute("droppable", true);
+  });
+
+  //   console.log(cells);
+  //   console.log(cellsVertices);
+  //   console.log(cellsVerticesAdjacent);
+  //   console.log(playerOneBoard);
 });
 
 let elementBelow = null;
