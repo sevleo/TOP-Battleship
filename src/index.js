@@ -43,6 +43,7 @@ let offSetX;
 let offSetY;
 let mouseDownOffsetHor = 0;
 let mouseDownOffsetVer = 0;
+let originalElementBelow = null;
 let elementBelow = null;
 
 // Mouse down
@@ -218,8 +219,10 @@ draggableElement.addEventListener("mousedown", (event) => {
     if (element.classList.contains("cell")) {
       if (element.getAttribute("droppable") === "true") {
         elementBelow = element;
+        originalElementBelow = element;
       } else {
         elementBelow = null;
+        originalElementBelow = null;
       }
     }
   });
@@ -244,6 +247,7 @@ document.addEventListener("mousemove", (event) => {
     draggableElement.style.left = `${event.clientX - offSetX}px`;
     draggableElement.style.top = `${event.clientY - offSetY}px`;
   }
+  //   console.log(elementBelow);
 });
 
 // Mouse up
@@ -306,126 +310,8 @@ document.addEventListener("mouseup", (event) => {
     }
 
     if (elementBelow) {
-      if (elementBelow.getAttribute("droppable") === "true") {
-        elementBelow.append(draggableElement);
-        appended = true;
-
-        const cells = [];
-        const cellsVertices = [];
-        const firstCell = elementBelow;
-        let secondCell;
-        let thirdCell;
-        let fourthCell;
-
-        cells.push(firstCell);
-
-        if (draggableElementRect.width >= 80) {
-          // const firstCellClassArray = firstCell.classList[0]
-          //   .split(",")
-          //   .map(Number);
-          // console.log(firstCellClassArray);
-          // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`);
-          // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`);
-          // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`);
-
-          const cellElements = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor + 40,
-            event.clientY - mouseDownOffsetVer,
-          );
-          cellElements.forEach((element) => {
-            if (element.classList.contains("cell")) {
-              secondCell = element;
-              cells.push(secondCell);
-            }
-          });
-        }
-
-        if (draggableElementRect.width >= 120) {
-          const cellElements = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor + 80,
-            event.clientY - mouseDownOffsetVer,
-          );
-          cellElements.forEach((element) => {
-            if (element.classList.contains("cell")) {
-              thirdCell = element;
-              cells.push(thirdCell);
-            }
-          });
-        }
-
-        if (draggableElementRect.width >= 160) {
-          const cellElements = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor + 120,
-            event.clientY - mouseDownOffsetVer,
-          );
-          cellElements.forEach((element) => {
-            if (element.classList.contains("cell")) {
-              fourthCell = element;
-              cells.push(fourthCell);
-            }
-          });
-        }
-
-        if (draggableElementRect.height >= 80) {
-          const cellElements = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor,
-            event.clientY - mouseDownOffsetVer + 40,
-          );
-          cellElements.forEach((element) => {
-            if (element.classList.contains("cell")) {
-              secondCell = element;
-              cells.push(secondCell);
-            }
-          });
-        }
-
-        if (draggableElementRect.height >= 120) {
-          const cellElements = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor,
-            event.clientY - mouseDownOffsetVer + 80,
-          );
-          cellElements.forEach((element) => {
-            if (element.classList.contains("cell")) {
-              thirdCell = element;
-              cells.push(thirdCell);
-            }
-          });
-        }
-
-        if (draggableElementRect.height >= 160) {
-          const cellElements = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor,
-            event.clientY - mouseDownOffsetVer + 120,
-          );
-          cellElements.forEach((element) => {
-            if (element.classList.contains("cell")) {
-              fourthCell = element;
-              cells.push(fourthCell);
-            }
-          });
-        }
-
-        cells.forEach((cell) => {
-          cell.setAttribute("droppable", false);
-          const className = cell.classList[0];
-          const array = className.split(",").map(Number);
-          const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
-          cellsVertices.push(vertex);
-        });
-        cellsVertices.forEach((cellVertex) => {
-          console.log(cellVertex);
-          cellVertex.occupiedByShip = true;
-          cellVertex.occupied = true;
-          cellVertex.adjacencyList.forEach((adjacency) => {
-            adjacency.occupied = true;
-            const className = `${adjacency.coordinates[0]},${adjacency.coordinates[1]}`;
-            const parentDiv = document.querySelector(".playerOne-board");
-            const div = parentDiv.querySelector(`[class*="${className}"].cell`);
-            div.setAttribute("droppable", false);
-          });
-        });
-        console.log(playerOneBoard.board.vertices);
-      }
+      makeDroppable(elementBelow, event);
+      appended = true;
     }
 
     draggableElement.style.left = 0;
@@ -440,5 +326,138 @@ document.addEventListener("mouseup", (event) => {
     if (elementBelow && appended === false) {
       elementBelow.setAttribute("droppable", true);
     }
+    if (elementBelow === null) {
+      originalElementBelow.setAttribute("droppable", false);
+    }
   }
 });
+
+// The cells under the draggable element will be made droppable while the element is getting dragged
+function makeDroppable(elBelow, event) {
+  if (elBelow.getAttribute("droppable") === "true") {
+    elBelow.append(draggableElement);
+
+    const cells = [];
+    const cellsVertices = [];
+    const firstCell = elBelow;
+    let secondCell;
+    let thirdCell;
+    let fourthCell;
+
+    cells.push(firstCell);
+
+    if (draggableElementRect.width >= 80) {
+      // const firstCellClassArray = firstCell.classList[0]
+      //   .split(",")
+      //   .map(Number);
+      // console.log(firstCellClassArray);
+      // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`);
+      // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`);
+      // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`);
+
+      const cellElements = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor + 40,
+        event.clientY - mouseDownOffsetVer,
+      );
+      cellElements.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          secondCell = element;
+          cells.push(secondCell);
+        }
+      });
+    }
+
+    if (draggableElementRect.width >= 120) {
+      const cellElements = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor + 80,
+        event.clientY - mouseDownOffsetVer,
+      );
+      cellElements.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          thirdCell = element;
+          cells.push(thirdCell);
+        }
+      });
+    }
+
+    if (draggableElementRect.width >= 160) {
+      const cellElements = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor + 120,
+        event.clientY - mouseDownOffsetVer,
+      );
+      cellElements.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          fourthCell = element;
+          cells.push(fourthCell);
+        }
+      });
+    }
+
+    if (draggableElementRect.height >= 80) {
+      const cellElements = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor,
+        event.clientY - mouseDownOffsetVer + 40,
+      );
+      cellElements.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          secondCell = element;
+          cells.push(secondCell);
+        }
+      });
+    }
+
+    if (draggableElementRect.height >= 120) {
+      const cellElements = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor,
+        event.clientY - mouseDownOffsetVer + 80,
+      );
+      cellElements.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          thirdCell = element;
+          cells.push(thirdCell);
+        }
+      });
+    }
+
+    if (draggableElementRect.height >= 160) {
+      const cellElements = document.elementsFromPoint(
+        event.clientX - mouseDownOffsetHor,
+        event.clientY - mouseDownOffsetVer + 120,
+      );
+      cellElements.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          fourthCell = element;
+          cells.push(fourthCell);
+        }
+      });
+    }
+
+    // Set droppable attribute on the cells under draggable element
+    cells.forEach((cell) => {
+      cell.setAttribute("droppable", false);
+      const className = cell.classList[0];
+      const array = className.split(",").map(Number);
+      const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+      cellsVertices.push(vertex);
+    });
+
+    // Update the graph accordingly
+    cellsVertices.forEach((cellVertex) => {
+      console.log(cellVertex);
+      cellVertex.occupiedByShip = true;
+      cellVertex.occupied = true;
+
+      // Update adjacent cells
+      cellVertex.adjacencyList.forEach((adjacency) => {
+        // Graph
+        adjacency.occupied = true;
+        const className = `${adjacency.coordinates[0]},${adjacency.coordinates[1]}`;
+        const parentDiv = document.querySelector(".playerOne-board");
+        const div = parentDiv.querySelector(`[class*="${className}"].cell`);
+        // Node element
+        div.setAttribute("droppable", false);
+      });
+    });
+    console.log(playerOneBoard.board.vertices);
+  }
+}
