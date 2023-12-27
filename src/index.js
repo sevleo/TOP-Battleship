@@ -310,10 +310,10 @@ document.addEventListener("mouseup", (event) => {
     }
 
     if (elementBelow !== null) {
-      makeDroppable(elementBelow, event);
+      makeDroppable(elementBelow);
       appended = true;
     } else if (elementBelow === null) {
-      makeDroppable(originalElementBelow, event);
+      makeDroppable(originalElementBelow);
     }
 
     draggableElement.style.left = 0;
@@ -335,7 +335,7 @@ document.addEventListener("mouseup", (event) => {
 });
 
 // The cells under the draggable element will be made droppable while the element is getting dragged
-function makeDroppable(elBelow, event) {
+function makeDroppable(elBelow) {
   if (elBelow.getAttribute("droppable") === "true") {
     elBelow.append(draggableElement);
 
