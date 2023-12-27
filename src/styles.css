@@ -187,3 +187,7 @@ body {
   outline: 1px green solid;
   background-color: rgba(0, 255, 0, 0.2);
 }
+
+[droppable="true"] {
+  background-color: rgba(128, 128, 128, 0.2);
+}
