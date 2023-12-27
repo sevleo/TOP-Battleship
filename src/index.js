@@ -340,20 +340,50 @@ function makeDroppable(elBelow, event) {
     const cells = [];
     const cellsVertices = [];
     const firstCell = elBelow;
-    let secondCell;
-    let thirdCell;
-    let fourthCell;
+    let secondCellH;
+    let thirdCellH;
+    let fourthCellH;
+    let secondCellV;
+    let thirdCellV;
+    let fourthCellV;
 
     cells.push(firstCell);
 
     if (draggableElementRect.width >= 80) {
-      // const firstCellClassArray = firstCell.classList[0]
-      //   .split(",")
-      //   .map(Number);
-      // console.log(firstCellClassArray);
-      // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`);
-      // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`);
-      // console.log(`${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`);
+      const firstCellClassArray = firstCell.classList[0].split(",").map(Number);
+      const parentDivBoardOne = document.querySelector(".playerOne-board");
+      secondCellH = DOMHandler.findDivByCoordinates(
+        `${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`,
+        parentDivBoardOne,
+      );
+      thirdCellH = DOMHandler.findDivByCoordinates(
+        `${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`,
+        parentDivBoardOne,
+      );
+      fourthCellH = DOMHandler.findDivByCoordinates(
+        `${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`,
+        parentDivBoardOne,
+      );
+      secondCellV = DOMHandler.findDivByCoordinates(
+        `${firstCellClassArray[0] + 1},${firstCellClassArray[1]}`,
+        parentDivBoardOne,
+      );
+      thirdCellV = DOMHandler.findDivByCoordinates(
+        `${firstCellClassArray[0] + 2},${firstCellClassArray[1]}`,
+        parentDivBoardOne,
+      );
+      fourthCellV = DOMHandler.findDivByCoordinates(
+        `${firstCellClassArray[0] + 3},${firstCellClassArray[1]}`,
+        parentDivBoardOne,
+      );
+
+      console.log(firstCell);
+      console.log(secondCellH);
+      console.log(thirdCellH);
+      console.log(fourthCellH);
+      console.log(secondCellV);
+      console.log(thirdCellV);
+      console.log(fourthCellV);
 
       const cellElements = document.elementsFromPoint(
         event.clientX - mouseDownOffsetHor + 40,
@@ -361,8 +391,8 @@ function makeDroppable(elBelow, event) {
       );
       cellElements.forEach((element) => {
         if (element.classList.contains("cell")) {
-          secondCell = element;
-          cells.push(secondCell);
+          secondCellH = element;
+          cells.push(secondCellH);
         }
       });
     }
@@ -374,8 +404,8 @@ function makeDroppable(elBelow, event) {
       );
       cellElements.forEach((element) => {
         if (element.classList.contains("cell")) {
-          thirdCell = element;
-          cells.push(thirdCell);
+          thirdCellH = element;
+          cells.push(thirdCellH);
         }
       });
     }
@@ -387,8 +417,8 @@ function makeDroppable(elBelow, event) {
       );
       cellElements.forEach((element) => {
         if (element.classList.contains("cell")) {
-          fourthCell = element;
-          cells.push(fourthCell);
+          fourthCellH = element;
+          cells.push(fourthCellH);
         }
       });
     }

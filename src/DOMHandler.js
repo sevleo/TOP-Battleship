@@ -355,12 +355,17 @@ const DOMHandler = (() => {
     });
   }
 
+  function findDivByCoordinates(coordinates, parentDiv) {
+    const div = parentDiv.querySelector(`[class*="${coordinates}"].cell`);
+    return div;
+  }
+
   function drawShips() {
+    const parentDivBoardOne = document.querySelector(".playerOne-board");
     DOMHandler.playerOneShips.forEach((ship) => {
-      const firstCellClassName = `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`;
-      const parentDiv = document.querySelector(".playerOne-board");
-      const div = parentDiv.querySelector(
-        `[class*="${firstCellClassName}"].cell`,
+      const div = findDivByCoordinates(
+        `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`,
+        parentDivBoardOne,
       );
 
       const shipDiv = document.createElement("div");
@@ -384,7 +389,7 @@ const DOMHandler = (() => {
       ship.coordinates.forEach((c) => {
         const className = `${c[0]},${c[1]}`;
         const shipCells = Array.from(
-          parentDiv.getElementsByTagName("div"),
+          parentDivBoardOne.getElementsByTagName("div"),
         ).filter((elem) => elem.classList.contains(className));
         shipCells.forEach((element) => {
           // element.classList.add("ship-cell");
@@ -394,9 +399,8 @@ const DOMHandler = (() => {
 
     DOMHandler.playerTwoShips.forEach((ship) => {
       ship.coordinates.forEach((c) => {
-        const className = `${c[0]},${c[1]}`;
-        const parentDiv = document.querySelector(".playerTwo-board");
-        const div = parentDiv.querySelector(`[class*="${className}"]`);
+        const parentDivBoardTwo = document.querySelector(".playerTwo-board");
+        const div = findDivByCoordinates(`${c[0]},${c[1]}`, parentDivBoardTwo);
         div.classList.add("ship-cell");
       });
     });
@@ -415,6 +419,7 @@ const DOMHandler = (() => {
     playerOneShips,
     playerTwoShips,
     createDom,
+    findDivByCoordinates,
   };
 })();
 
