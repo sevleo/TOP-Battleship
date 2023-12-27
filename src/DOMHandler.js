@@ -387,7 +387,7 @@ const DOMHandler = (() => {
           parentDiv.getElementsByTagName("div"),
         ).filter((elem) => elem.classList.contains(className));
         shipCells.forEach((element) => {
-          element.classList.add("ship-cell");
+          // element.classList.add("ship-cell");
         });
       });
     });

@@ -84,10 +84,10 @@ function GameboardModule() {
         shipLength: 2,
       },
       {
-        shipLength: 3,
+        shipLength: 2,
       },
       {
-        shipLength: 4,
+        shipLength: 2,
       },
       {
         shipLength: 4,
