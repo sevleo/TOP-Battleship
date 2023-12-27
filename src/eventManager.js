@@ -1,6 +1,6 @@
+/* eslint-disable no-param-reassign */
 // eslint-disable-next-line import/no-cycle
-import gameLoop from ".";
-import { playerOneBoard } from ".";
+import gameLoop, { playerOneBoard } from ".";
 import DOMHandler from "./DOMHandler";
 
 function addEventListeners() {
@@ -19,6 +19,93 @@ function addEventListeners() {
   let mouseDownOffsetVer = 0;
   let originalElementBelow = null;
   let elementBelow = null;
+
+  // The cells under the draggable element will be made droppable while the element is getting dragged
+  function makeDroppable(elBelow) {
+    const cells = [];
+    const cellsVertices = [];
+    const firstCell = elBelow;
+
+    cells.push(firstCell);
+
+    const firstCellClassArray = firstCell.classList[0].split(",").map(Number);
+    const parentDivBoardOne = document.querySelector(".playerOne-board");
+    const secondCellH = DOMHandler.findDivByCoordinates(
+      `${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`,
+      parentDivBoardOne,
+    );
+    const thirdCellH = DOMHandler.findDivByCoordinates(
+      `${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`,
+      parentDivBoardOne,
+    );
+    const fourthCellH = DOMHandler.findDivByCoordinates(
+      `${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`,
+      parentDivBoardOne,
+    );
+    const secondCellV = DOMHandler.findDivByCoordinates(
+      `${firstCellClassArray[0] + 1},${firstCellClassArray[1]}`,
+      parentDivBoardOne,
+    );
+    const thirdCellV = DOMHandler.findDivByCoordinates(
+      `${firstCellClassArray[0] + 2},${firstCellClassArray[1]}`,
+      parentDivBoardOne,
+    );
+    const fourthCellV = DOMHandler.findDivByCoordinates(
+      `${firstCellClassArray[0] + 3},${firstCellClassArray[1]}`,
+      parentDivBoardOne,
+    );
+
+    if (draggableElementRect.width >= 160) {
+      cells.push(secondCellH);
+      cells.push(thirdCellH);
+      cells.push(fourthCellH);
+    } else if (draggableElementRect.width >= 120) {
+      cells.push(secondCellH);
+      cells.push(thirdCellH);
+    } else if (draggableElementRect.width >= 80) {
+      cells.push(secondCellH);
+    }
+
+    if (draggableElementRect.height >= 160) {
+      cells.push(secondCellV);
+      cells.push(thirdCellV);
+      cells.push(fourthCellV);
+    } else if (draggableElementRect.height >= 120) {
+      cells.push(secondCellV);
+      cells.push(thirdCellV);
+    } else if (draggableElementRect.height >= 80) {
+      cells.push(secondCellV);
+    }
+
+    // Set droppable attribute on the cells under draggable element
+    cells.forEach((cell) => {
+      if (cell) {
+        cell.setAttribute("droppable", false);
+        const className = cell.classList[0];
+        const array = className.split(",").map(Number);
+        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+        cellsVertices.push(vertex);
+      }
+    });
+
+    // Update the graph accordingly
+    cellsVertices.forEach((cellVertex) => {
+      cellVertex.occupiedByShip = true;
+      cellVertex.occupied = true;
+
+      // Update adjacent cells
+      cellVertex.adjacencyList.forEach((adjacency) => {
+        // Graph
+        adjacency.occupied = true;
+        const className = `${adjacency.coordinates[0]},${adjacency.coordinates[1]}`;
+        const parentDiv = document.querySelector(".playerOne-board");
+        const div = parentDiv.querySelector(`[class*="${className}"].cell`);
+        // Node element
+        div.setAttribute("droppable", false);
+      });
+    });
+    console.log(playerOneBoard.board.vertices);
+  }
 
   // Mouse down
   document.addEventListener("mousedown", (event) => {
@@ -298,7 +385,6 @@ function addEventListeners() {
           }
         });
       }
-
       console.log(elementBelow);
       if (elementBelow !== null) {
         if (elementBelow.getAttribute("droppable") === "true") {
@@ -325,7 +411,9 @@ function addEventListeners() {
       mouseDownOffsetHor = 0;
       mouseDownOffsetVer = 0;
       if (elementBelow && appended === false) {
-        elementBelow.setAttribute("droppable", true);
+        if (elementBelow === originalElementBelow) {
+          elementBelow.setAttribute("droppable", true);
+        }
       }
       if (elementBelow === null) {
         originalElementBelow.setAttribute("droppable", false);
@@ -334,99 +422,6 @@ function addEventListeners() {
     draggableElement = null;
     draggableElementRect = null;
   });
-
-  // The cells under the draggable element will be made droppable while the element is getting dragged
-  function makeDroppable(elBelow) {
-    const cells = [];
-    const cellsVertices = [];
-    const firstCell = elBelow;
-    let secondCellH;
-    let thirdCellH;
-    let fourthCellH;
-    let secondCellV;
-    let thirdCellV;
-    let fourthCellV;
-
-    cells.push(firstCell);
-
-    const firstCellClassArray = firstCell.classList[0].split(",").map(Number);
-    const parentDivBoardOne = document.querySelector(".playerOne-board");
-    secondCellH = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`,
-      parentDivBoardOne,
-    );
-    thirdCellH = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`,
-      parentDivBoardOne,
-    );
-    fourthCellH = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`,
-      parentDivBoardOne,
-    );
-    secondCellV = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0] + 1},${firstCellClassArray[1]}`,
-      parentDivBoardOne,
-    );
-    thirdCellV = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0] + 2},${firstCellClassArray[1]}`,
-      parentDivBoardOne,
-    );
-    fourthCellV = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0] + 3},${firstCellClassArray[1]}`,
-      parentDivBoardOne,
-    );
-
-    if (draggableElementRect.width >= 160) {
-      cells.push(secondCellH);
-      cells.push(thirdCellH);
-      cells.push(fourthCellH);
-    } else if (draggableElementRect.width >= 120) {
-      cells.push(secondCellH);
-      cells.push(thirdCellH);
-    } else if (draggableElementRect.width >= 80) {
-      cells.push(secondCellH);
-    }
-
-    if (draggableElementRect.height >= 160) {
-      cells.push(secondCellV);
-      cells.push(thirdCellV);
-      cells.push(fourthCellV);
-    } else if (draggableElementRect.height >= 120) {
-      cells.push(secondCellV);
-      cells.push(thirdCellV);
-    } else if (draggableElementRect.height >= 80) {
-      cells.push(secondCellV);
-    }
-
-    // Set droppable attribute on the cells under draggable element
-    cells.forEach((cell) => {
-      if (cell) {
-        cell.setAttribute("droppable", false);
-        const className = cell.classList[0];
-        const array = className.split(",").map(Number);
-        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
-        cellsVertices.push(vertex);
-      }
-    });
-
-    // Update the graph accordingly
-    cellsVertices.forEach((cellVertex) => {
-      cellVertex.occupiedByShip = true;
-      cellVertex.occupied = true;
-
-      // Update adjacent cells
-      cellVertex.adjacencyList.forEach((adjacency) => {
-        // Graph
-        adjacency.occupied = true;
-        const className = `${adjacency.coordinates[0]},${adjacency.coordinates[1]}`;
-        const parentDiv = document.querySelector(".playerOne-board");
-        const div = parentDiv.querySelector(`[class*="${className}"].cell`);
-        // Node element
-        div.setAttribute("droppable", false);
-      });
-    });
-    console.log(playerOneBoard.board.vertices);
-  }
 }
 
 export default addEventListeners;
