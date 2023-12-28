@@ -8,7 +8,11 @@ function addEventListeners() {
   randomizeButton.addEventListener("click", () => {
     gameLoop();
   });
+}
 
+export default addEventListeners;
+
+function addDocumentEventListeners() {
   let draggableElement = null;
   let draggableElementRect = null;
 
@@ -126,7 +130,7 @@ function addEventListeners() {
   }
 
   // Mouse down
-  document.addEventListener("mousedown", (event) => {
+  const onMouseDown = (event) => {
     const elementsFromPoint = document.elementsFromPoint(
       event.clientX,
       event.clientY,
@@ -319,10 +323,10 @@ function addEventListeners() {
         }
       });
     }
-  });
+  };
 
   // Mouse move
-  document.addEventListener("mousemove", (event) => {
+  const onMouseMove = (event) => {
     if (isDragging) {
       const elementsBelow = document.elementsFromPoint(
         event.clientX - mouseDownOffsetHor,
@@ -342,10 +346,10 @@ function addEventListeners() {
         draggableElement.style.top = `${event.clientY - offSetY}px`;
       }
     }
-  });
+  };
 
   // Mouse up
-  document.addEventListener("mouseup", (event) => {
+  const onMouseUp = (event) => {
     if (isDragging) {
       isDragging = false;
       // let appended = false;
@@ -438,7 +442,11 @@ function addEventListeners() {
     draggableElement = null;
     draggableElementRect = null;
     updateDroppableAttribute();
-  });
+  };
+
+  document.addEventListener("mousedown", onMouseDown);
+  document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener("mouseup", onMouseUp);
 }
 
-export default addEventListeners;
+export { addDocumentEventListeners };

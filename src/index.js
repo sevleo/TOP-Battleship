@@ -2,6 +2,7 @@ import "./styles.css";
 // eslint-disable-next-line import/no-cycle
 import DOMHandler from "./DOMHandler";
 import GameboardModule from "./gameboard";
+import { addDocumentEventListeners } from "./eventManager";
 
 let playerOneBoard = null;
 
@@ -31,6 +32,7 @@ function gameLoop() {
 }
 
 gameLoop();
+addDocumentEventListeners();
 
 export default gameLoop;
 export { playerOneBoard };
