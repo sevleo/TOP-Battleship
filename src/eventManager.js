@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 // eslint-disable-next-line import/no-cycle
 import gameLoop, { playerOneBoard } from ".";
@@ -83,44 +84,100 @@ function addDocumentEventListeners() {
     return null;
   }
 
-  // Checks if the element is getting dropped within the borders of the board
-  function checkBorders() {
-    if (elementBelow) {
-      const elementBelowCoordinates = elementBelow.classList[0]
-        .split(",")
-        .map(Number);
-      if (draggableElementRect.height === 80) {
-        if (elementBelowCoordinates[0] > 9) {
-          elementBelow.setAttribute("droppable", false);
-        }
-      }
-      if (draggableElementRect.height === 120) {
-        if (elementBelowCoordinates[0] > 8) {
-          elementBelow.setAttribute("droppable", false);
-        }
-      }
-      if (draggableElementRect.height === 160) {
-        if (elementBelowCoordinates[0] > 7) {
-          elementBelow.setAttribute("droppable", false);
-        }
-      }
+  // Checks if dropping the ship on the position will cause
+  // overlap with another ship
+  function checkOtherShipOverlap(event) {
+    let noOverlap = true;
+    if (draggableElementRect.width > 40 || draggableElementRect.height > 40) {
+      let lastShipElement;
 
       if (draggableElementRect.width === 80) {
-        if (elementBelowCoordinates[1] > 9) {
-          elementBelow.setAttribute("droppable", false);
-        }
+        lastShipElement = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor + 40,
+          event.clientY - mouseDownOffsetVer,
+        );
+      } else if (draggableElementRect.width === 120) {
+        lastShipElement = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor + 80,
+          event.clientY - mouseDownOffsetVer,
+        );
+      } else if (draggableElementRect.width === 160) {
+        lastShipElement = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor + 120,
+          event.clientY - mouseDownOffsetVer,
+        );
+      } else if (draggableElementRect.height === 80) {
+        lastShipElement = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor,
+          event.clientY - mouseDownOffsetVer + 40,
+        );
+      } else if (draggableElementRect.height === 120) {
+        lastShipElement = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor,
+          event.clientY - mouseDownOffsetVer + 80,
+        );
+      } else if (draggableElementRect.height === 160) {
+        lastShipElement = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor,
+          event.clientY - mouseDownOffsetVer + 120,
+        );
       }
-      if (draggableElementRect.width === 120) {
-        if (elementBelowCoordinates[1] > 8) {
-          elementBelow.setAttribute("droppable", false);
+
+      lastShipElement.forEach((element) => {
+        if (element.classList.contains("cell")) {
+          const className = element.classList[0];
+          const array = className.split(",").map(Number);
+          const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+
+          vertex.adjacencyList.forEach((adjacency) => {
+            if (adjacency.occupiedByShip === true) {
+              if (elementBelow) {
+                noOverlap = false;
+              }
+            }
+          });
         }
-      }
-      if (draggableElementRect.width === 160) {
-        if (elementBelowCoordinates[1] > 7) {
-          elementBelow.setAttribute("droppable", false);
-        }
+      });
+    }
+    return noOverlap;
+  }
+
+  // Checks if the element is getting dropped within the borders of the board
+  function checkWithinBorders() {
+    const elementBelowCoordinates = elementBelow.classList[0]
+      .split(",")
+      .map(Number);
+    if (draggableElementRect.height === 80) {
+      if (elementBelowCoordinates[0] > 9) {
+        return false;
       }
     }
+    if (draggableElementRect.height === 120) {
+      if (elementBelowCoordinates[0] > 8) {
+        return false;
+      }
+    }
+    if (draggableElementRect.height === 160) {
+      if (elementBelowCoordinates[0] > 7) {
+        return false;
+      }
+    }
+    if (draggableElementRect.width === 80) {
+      if (elementBelowCoordinates[1] > 9) {
+        return false;
+      }
+    }
+    if (draggableElementRect.width === 120) {
+      if (elementBelowCoordinates[1] > 8) {
+        return false;
+      }
+    }
+    if (draggableElementRect.width === 160) {
+      if (elementBelowCoordinates[1] > 7) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // Update droppable attribute on board
@@ -416,61 +473,16 @@ function addDocumentEventListeners() {
 
     if (isDragging) {
       isDragging = false;
-      // let appended = false;
 
-      if (draggableElementRect.width > 40 || draggableElementRect.height > 40) {
-        let lastShipElement;
-
-        if (draggableElementRect.width === 80) {
-          lastShipElement = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor + 40,
-            event.clientY - mouseDownOffsetVer,
-          );
-        } else if (draggableElementRect.width === 120) {
-          lastShipElement = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor + 80,
-            event.clientY - mouseDownOffsetVer,
-          );
-        } else if (draggableElementRect.width === 160) {
-          lastShipElement = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor + 120,
-            event.clientY - mouseDownOffsetVer,
-          );
-        } else if (draggableElementRect.height === 80) {
-          lastShipElement = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor,
-            event.clientY - mouseDownOffsetVer + 40,
-          );
-        } else if (draggableElementRect.height === 120) {
-          lastShipElement = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor,
-            event.clientY - mouseDownOffsetVer + 80,
-          );
-        } else if (draggableElementRect.height === 160) {
-          lastShipElement = document.elementsFromPoint(
-            event.clientX - mouseDownOffsetHor,
-            event.clientY - mouseDownOffsetVer + 120,
-          );
+      if (elementBelow) {
+        if (!checkOtherShipOverlap(event)) {
+          elementBelow.setAttribute("droppable", false);
         }
-
-        lastShipElement.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            const className = element.classList[0];
-            const array = className.split(",").map(Number);
-            const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
-
-            vertex.adjacencyList.forEach((adjacency) => {
-              if (adjacency.occupiedByShip === true) {
-                if (elementBelow) {
-                  elementBelow.setAttribute("droppable", false);
-                }
-              }
-            });
-          }
-        });
+        if (!checkWithinBorders()) {
+          elementBelow.setAttribute("droppable", false);
+        }
       }
 
-      checkBorders();
       makeUndroppable(identifyCellsToMakeDroppable());
 
       draggableElement.style.left = 0;
