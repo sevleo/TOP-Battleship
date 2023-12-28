@@ -24,6 +24,34 @@ function addDocumentEventListeners() {
   let originalElementBelow = null;
   let elementBelow = null;
 
+  // Find cells under the ship
+  function findShipCells(firstElement, orientation, length) {
+    const cells = [];
+    cells.push(firstElement);
+    const firstCellClassArray = firstElement.classList[0]
+      .split(",")
+      .map(Number);
+    const parentDivBoardOne = document.querySelector(".playerOne-board");
+
+    for (let i = 1; i <= length; i += 1) {
+      if (orientation === "h") {
+        const cell = DOMHandler.findDivByCoordinates(
+          `${firstCellClassArray[0]},${firstCellClassArray[1] + i}`,
+          parentDivBoardOne,
+        );
+        cells.push(cell);
+      }
+      if (orientation === "v") {
+        const cell = DOMHandler.findDivByCoordinates(
+          `${firstCellClassArray[0] + i},${firstCellClassArray[1]}`,
+          parentDivBoardOne,
+        );
+        cells.push(cell);
+      }
+    }
+    return cells;
+  }
+
   // Checks if the element is getting dropped within the borders of the board
   function checkBorders() {
     if (elementBelow) {
@@ -84,60 +112,23 @@ function addDocumentEventListeners() {
 
   // The cells under the draggable element will be made undroppable when the mouse is up
   function makeUndroppable(elBelow) {
-    const cells = [];
+    let cells = [];
     const cellsVertices = [];
-    const firstCell = elBelow;
-
-    cells.push(firstCell);
-    console.log(firstCell);
-
-    const firstCellClassArray = firstCell.classList[0].split(",").map(Number);
-    const parentDivBoardOne = document.querySelector(".playerOne-board");
-    const secondCellH = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0]},${firstCellClassArray[1] + 1}`,
-      parentDivBoardOne,
-    );
-    const thirdCellH = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0]},${firstCellClassArray[1] + 2}`,
-      parentDivBoardOne,
-    );
-    const fourthCellH = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0]},${firstCellClassArray[1] + 3}`,
-      parentDivBoardOne,
-    );
-    const secondCellV = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0] + 1},${firstCellClassArray[1]}`,
-      parentDivBoardOne,
-    );
-    const thirdCellV = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0] + 2},${firstCellClassArray[1]}`,
-      parentDivBoardOne,
-    );
-    const fourthCellV = DOMHandler.findDivByCoordinates(
-      `${firstCellClassArray[0] + 3},${firstCellClassArray[1]}`,
-      parentDivBoardOne,
-    );
 
     if (draggableElementRect.width >= 160) {
-      cells.push(secondCellH);
-      cells.push(thirdCellH);
-      cells.push(fourthCellH);
+      cells = findShipCells(elBelow, "h", 3);
     } else if (draggableElementRect.width >= 120) {
-      cells.push(secondCellH);
-      cells.push(thirdCellH);
+      cells = findShipCells(elBelow, "h", 2);
     } else if (draggableElementRect.width >= 80) {
-      cells.push(secondCellH);
+      cells = findShipCells(elBelow, "h", 1);
     }
 
     if (draggableElementRect.height >= 160) {
-      cells.push(secondCellV);
-      cells.push(thirdCellV);
-      cells.push(fourthCellV);
+      cells = findShipCells(elBelow, "v", 3);
     } else if (draggableElementRect.height >= 120) {
-      cells.push(secondCellV);
-      cells.push(thirdCellV);
+      cells = findShipCells(elBelow, "v", 2);
     } else if (draggableElementRect.height >= 80) {
-      cells.push(secondCellV);
+      cells = findShipCells(elBelow, "v", 1);
     }
 
     // Set droppable attribute on the cells under draggable element
