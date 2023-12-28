@@ -24,6 +24,46 @@ function addDocumentEventListeners() {
   let originalElementBelow = null;
   let elementBelow = null;
 
+  // Checks if the element is getting dropped within the borders of the board
+  function checkBorders() {
+    if (elementBelow) {
+      const elementBelowCoordinates = elementBelow.classList[0]
+        .split(",")
+        .map(Number);
+      if (draggableElementRect.height === 80) {
+        if (elementBelowCoordinates[0] > 9) {
+          elementBelow.setAttribute("droppable", false);
+        }
+      }
+      if (draggableElementRect.height === 120) {
+        if (elementBelowCoordinates[0] > 8) {
+          elementBelow.setAttribute("droppable", false);
+        }
+      }
+      if (draggableElementRect.height === 160) {
+        if (elementBelowCoordinates[0] > 7) {
+          elementBelow.setAttribute("droppable", false);
+        }
+      }
+
+      if (draggableElementRect.width === 80) {
+        if (elementBelowCoordinates[1] > 9) {
+          elementBelow.setAttribute("droppable", false);
+        }
+      }
+      if (draggableElementRect.width === 120) {
+        if (elementBelowCoordinates[1] > 8) {
+          elementBelow.setAttribute("droppable", false);
+        }
+      }
+      if (draggableElementRect.width === 160) {
+        if (elementBelowCoordinates[1] > 7) {
+          elementBelow.setAttribute("droppable", false);
+        }
+      }
+    }
+  }
+
   // Update droppable attribute on board
   function updateDroppableAttribute() {
     const parentDivBoardOne = document.querySelector(".playerOne-board");
@@ -405,6 +445,10 @@ function addDocumentEventListeners() {
           }
         });
       }
+
+      // Check border
+      checkBorders();
+
       if (elementBelow !== null) {
         if (elementBelow.getAttribute("droppable") === "true") {
           elementBelow.append(draggableElement);
