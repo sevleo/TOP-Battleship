@@ -132,7 +132,7 @@ function GameboardModule() {
   function findShipById(id) {
     let ship = null;
     ships.forEach((s) => {
-      if (s.id === id) {
+      if (s.id === parseInt(id)) {
         ship = s;
       }
     });

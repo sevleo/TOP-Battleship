@@ -52,6 +52,37 @@ function addDocumentEventListeners() {
     return cells;
   }
 
+  // Find cells to change to "droppable = true" after drag & dropping a ship
+  function identifyCellsToMakeDroppable() {
+    const shipObject = playerOneBoard.findShipById(draggableElement.id);
+    if (elementBelow !== null) {
+      if (elementBelow.getAttribute("droppable") === "true") {
+        elementBelow.append(draggableElement);
+        return findShipCells(
+          elementBelow,
+          shipObject.position,
+          shipObject.length - 1,
+        );
+      }
+      if (elementBelow.getAttribute("droppable") === "false") {
+        originalElementBelow.append(draggableElement);
+        return findShipCells(
+          originalElementBelow,
+          shipObject.position,
+          shipObject.length - 1,
+        );
+      }
+    } else {
+      originalElementBelow.append(draggableElement);
+      return findShipCells(
+        originalElementBelow,
+        shipObject.position,
+        shipObject.length - 1,
+      );
+    }
+    return null;
+  }
+
   // Checks if the element is getting dropped within the borders of the board
   function checkBorders() {
     if (elementBelow) {
@@ -111,26 +142,8 @@ function addDocumentEventListeners() {
   }
 
   // The cells under the draggable element will be made undroppable when the mouse is up
-  function makeUndroppable(elBelow) {
-    let cells = [];
+  function makeUndroppable(cells) {
     const cellsVertices = [];
-
-    if (draggableElementRect.width >= 160) {
-      cells = findShipCells(elBelow, "h", 3);
-    } else if (draggableElementRect.width >= 120) {
-      cells = findShipCells(elBelow, "h", 2);
-    } else if (draggableElementRect.width >= 80) {
-      cells = findShipCells(elBelow, "h", 1);
-    }
-
-    if (draggableElementRect.height >= 160) {
-      cells = findShipCells(elBelow, "v", 3);
-    } else if (draggableElementRect.height >= 120) {
-      cells = findShipCells(elBelow, "v", 2);
-    } else if (draggableElementRect.height >= 80) {
-      cells = findShipCells(elBelow, "v", 1);
-    }
-
     // Set droppable attribute on the cells under draggable element
     cells.forEach((cell) => {
       if (cell) {
@@ -158,7 +171,6 @@ function addDocumentEventListeners() {
         div.setAttribute("droppable", false);
       });
     });
-    console.log(playerOneBoard.board.vertices);
   }
 
   // Mouse down
@@ -391,7 +403,7 @@ function addDocumentEventListeners() {
 
         draggableElement.style.width = width;
         draggableElement.style.height = height;
-        const ship = playerOneBoard.findShipById(parseInt(draggableElement.id));
+        const ship = playerOneBoard.findShipById(draggableElement.id);
         if (height > width) {
           ship.position = "v";
         } else {
@@ -458,24 +470,8 @@ function addDocumentEventListeners() {
         });
       }
 
-      // Check border
       checkBorders();
-
-      if (elementBelow !== null) {
-        if (elementBelow.getAttribute("droppable") === "true") {
-          elementBelow.append(draggableElement);
-          makeUndroppable(elementBelow);
-          // appended = true;
-        } else if (elementBelow.getAttribute("droppable") === "false") {
-          originalElementBelow.append(draggableElement);
-          makeUndroppable(originalElementBelow);
-          // appended = false;
-        }
-      } else {
-        originalElementBelow.append(draggableElement);
-        makeUndroppable(originalElementBelow);
-        // appended = false;
-      }
+      makeUndroppable(identifyCellsToMakeDroppable());
 
       draggableElement.style.left = 0;
       draggableElement.style.top = 0;
@@ -486,14 +482,6 @@ function addDocumentEventListeners() {
       offSetY = null;
       mouseDownOffsetHor = 0;
       mouseDownOffsetVer = 0;
-      // if (elementBelow && appended === false) {
-      //   if (elementBelow === originalElementBelow) {
-      //     elementBelow.setAttribute("droppable", true);
-      //   }
-      // }
-      // if (elementBelow === null) {
-      //   originalElementBelow.setAttribute("droppable", false);
-      // }
     }
     draggableElement = null;
     draggableElementRect = null;
