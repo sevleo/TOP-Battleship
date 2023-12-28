@@ -20,8 +20,26 @@ function addEventListeners() {
   let originalElementBelow = null;
   let elementBelow = null;
 
-  // The cells under the draggable element will be made droppable while the element is getting dragged
-  function makeDroppable(elBelow) {
+  // Update droppable attribute on board
+  function updateDroppableAttribute() {
+    const parentDivBoardOne = document.querySelector(".playerOne-board");
+
+    playerOneBoard.board.vertices.forEach((vertex) => {
+      const div = DOMHandler.findDivByCoordinates(
+        `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+        parentDivBoardOne,
+      );
+      if (vertex.occupied === true) {
+        div.setAttribute("droppable", false);
+      }
+      if (vertex.occupied === false) {
+        div.setAttribute("droppable", true);
+      }
+    });
+  }
+
+  // The cells under the draggable element will be made undroppable when the mouse is up
+  function makeUndroppable(elBelow) {
     const cells = [];
     const cellsVertices = [];
     const firstCell = elBelow;
@@ -93,14 +111,14 @@ function addEventListeners() {
       cellVertex.occupiedByShip = true;
       cellVertex.occupied = true;
 
-      // Update adjacent cells
+      // Update adjacent cells:
       cellVertex.adjacencyList.forEach((adjacency) => {
-        // Graph
+        // In the graph
         adjacency.occupied = true;
         const className = `${adjacency.coordinates[0]},${adjacency.coordinates[1]}`;
         const parentDiv = document.querySelector(".playerOne-board");
         const div = parentDiv.querySelector(`[class*="${className}"].cell`);
-        // Node element
+        // In DOM
         div.setAttribute("droppable", false);
       });
     });
@@ -240,7 +258,7 @@ function addEventListeners() {
         });
       }
 
-      // Change the droppable attribute of each cell to true
+      // Change the droppable attribute of each cell under draggable element to true
       cells.forEach((cell) => {
         cell.setAttribute("droppable", true);
         const className = cell.classList[0];
@@ -330,7 +348,7 @@ function addEventListeners() {
   document.addEventListener("mouseup", (event) => {
     if (isDragging) {
       isDragging = false;
-      let appended = false;
+      // let appended = false;
 
       if (draggableElementRect.width > 40 || draggableElementRect.height > 40) {
         let lastShipElement;
@@ -377,28 +395,26 @@ function addEventListeners() {
               if (adjacency.occupiedByShip === true) {
                 if (elementBelow) {
                   elementBelow.setAttribute("droppable", false);
-                  console.log(elementBelow);
-                  console.log(lastShipElement);
                 }
               }
             });
           }
         });
       }
-      console.log(elementBelow);
       if (elementBelow !== null) {
         if (elementBelow.getAttribute("droppable") === "true") {
-          makeDroppable(elementBelow);
           elementBelow.append(draggableElement);
-          appended = true;
+          makeUndroppable(elementBelow);
+          // appended = true;
         } else if (elementBelow.getAttribute("droppable") === "false") {
-          makeDroppable(originalElementBelow);
-          appended = false;
+          originalElementBelow.append(draggableElement);
+          makeUndroppable(originalElementBelow);
+          // appended = false;
         }
       } else {
-        makeDroppable(originalElementBelow);
         originalElementBelow.append(draggableElement);
-        appended = false;
+        makeUndroppable(originalElementBelow);
+        // appended = false;
       }
 
       draggableElement.style.left = 0;
@@ -410,17 +426,18 @@ function addEventListeners() {
       offSetY = null;
       mouseDownOffsetHor = 0;
       mouseDownOffsetVer = 0;
-      if (elementBelow && appended === false) {
-        if (elementBelow === originalElementBelow) {
-          elementBelow.setAttribute("droppable", true);
-        }
-      }
-      if (elementBelow === null) {
-        originalElementBelow.setAttribute("droppable", false);
-      }
+      // if (elementBelow && appended === false) {
+      //   if (elementBelow === originalElementBelow) {
+      //     elementBelow.setAttribute("droppable", true);
+      //   }
+      // }
+      // if (elementBelow === null) {
+      //   originalElementBelow.setAttribute("droppable", false);
+      // }
     }
     draggableElement = null;
     draggableElementRect = null;
+    updateDroppableAttribute();
   });
 }
 

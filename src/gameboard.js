@@ -80,14 +80,23 @@ function GameboardModule() {
   // Fill the Ships array
   function createShips() {
     const shipsConfig = [
+      //   {
+      //     shipLength: 1,
+      //   },
+      //   {
+      //     shipLength: 1,
+      //   },
+      //   {
+      //     shipLength: 1,
+      //   },
+      //   {
+      //     shipLength: 2,
+      //   },
+      //   {
+      //     shipLength: 2,
+      //   },
       {
-        shipLength: 2,
-      },
-      {
-        shipLength: 2,
-      },
-      {
-        shipLength: 2,
+        shipLength: 3,
       },
       {
         shipLength: 4,

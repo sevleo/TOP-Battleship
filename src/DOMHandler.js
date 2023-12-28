@@ -363,6 +363,7 @@ const DOMHandler = (() => {
   function drawShips() {
     const parentDivBoardOne = document.querySelector(".playerOne-board");
     DOMHandler.playerOneShips.forEach((ship) => {
+      console.log(typeof `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`);
       const div = findDivByCoordinates(
         `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`,
         parentDivBoardOne,
