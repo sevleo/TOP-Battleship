@@ -335,6 +335,8 @@ function addDocumentEventListeners() {
         });
       });
 
+      // console.log(cellsVerticesAdjacent);
+
       cellsVerticesAdjacent.forEach((vertex) => {
         const className = `${vertex.coordinates[0]},${vertex.coordinates[1]}`;
         const parentDiv = document.querySelector(".playerOne-board");
@@ -390,6 +392,24 @@ function addDocumentEventListeners() {
 
   // Mouse up
   const onMouseUp = (event) => {
+    if (elementBelow === originalElementBelow) {
+      if (draggableElement) {
+        const width = `${draggableElementRect.height}px`;
+        const height = `${draggableElementRect.width}px`;
+
+        draggableElement.style.width = width;
+        draggableElement.style.height = height;
+        const ship = playerOneBoard.findShipById(parseInt(draggableElement.id));
+        if (height > width) {
+          ship.position = "v";
+        } else {
+          ship.position = "h";
+        }
+        console.log(ship);
+        console.log(elementBelow);
+      }
+    }
+
     if (isDragging) {
       isDragging = false;
       // let appended = false;

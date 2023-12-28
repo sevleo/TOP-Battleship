@@ -82,28 +82,35 @@ function GameboardModule() {
     const shipsConfig = [
       //   {
       //     shipLength: 1,
+      //     shipId: 0,
       //   },
       //   {
       //     shipLength: 1,
+      //     shipId: 1,
       //   },
       //   {
       //     shipLength: 1,
+      //     shipId: 2,
       //   },
       //   {
       //     shipLength: 2,
+      //     shipId: 3,
       //   },
       //   {
       //     shipLength: 2,
+      //     shipId: 4,
       //   },
       {
         shipLength: 3,
+        shipId: 5,
       },
       {
         shipLength: 4,
+        shipId: 6,
       },
     ];
     shipsConfig.forEach((element) => {
-      const ship = ShipModule.createShip(element.shipLength);
+      const ship = ShipModule.createShip(element.shipLength, element.shipId);
       ships.push(ship);
     });
   }
@@ -119,6 +126,17 @@ function GameboardModule() {
         missingShots.push(element.coordinates);
       }
     });
+  }
+
+  // Find ship by shipId
+  function findShipById(id) {
+    let ship = null;
+    ships.forEach((s) => {
+      if (s.id === id) {
+        ship = s;
+      }
+    });
+    return ship;
   }
 
   // Register and process attacks
@@ -225,6 +243,7 @@ function GameboardModule() {
     allShipsSunk,
     positionShips,
     findVertextObjectByCoordinates,
+    findShipById,
   };
 }
 

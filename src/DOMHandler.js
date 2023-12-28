@@ -372,6 +372,7 @@ const DOMHandler = (() => {
       const shipDiv = document.createElement("div");
       shipDiv.classList.add("ship");
       shipDiv.classList.add("draggable");
+      shipDiv.setAttribute("id", ship.id);
       // shipDiv.setAttribute("draggable", true);
       // shipDiv.setAttribute("draggable", true);
 

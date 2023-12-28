@@ -28,11 +28,16 @@ function gameLoop() {
   DOMHandler.playerTwoShips = playerTwoBoard.ships;
 
   DOMHandler.createDom();
-  console.log(playerOneBoard);
 }
 
 gameLoop();
 addDocumentEventListeners();
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "c" || event.key === "C") {
+    console.log(playerOneBoard);
+  }
+});
 
 export default gameLoop;
 export { playerOneBoard };

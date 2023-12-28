@@ -1,7 +1,8 @@
 const ShipModule = (() => {
   // Creates a ship
-  function createShip(shipLength) {
+  function createShip(shipLength, shipId) {
     const ship = {
+      id: shipId,
       hitCount: 0,
       coordinates: [],
       length: shipLength,
