@@ -89,6 +89,7 @@ function addDocumentEventListeners() {
     const firstCell = elBelow;
 
     cells.push(firstCell);
+    console.log(firstCell);
 
     const firstCellClassArray = firstCell.classList[0].split(",").map(Number);
     const parentDivBoardOne = document.querySelector(".playerOne-board");
