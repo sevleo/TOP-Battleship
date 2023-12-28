@@ -180,7 +180,7 @@ function addDocumentEventListeners() {
     return true;
   }
 
-  // Update droppable attribute on board
+  // Update droppable attribute on board for each cell based on occupied value in the graph
   function updateDroppableAttribute() {
     const parentDivBoardOne = document.querySelector(".playerOne-board");
 
@@ -201,7 +201,7 @@ function addDocumentEventListeners() {
   // The cells under the draggable element will be made undroppable when the mouse is up
   function makeUndroppable(cells) {
     const cellsVertices = [];
-    // Set droppable attribute on the cells under draggable element
+    // Set droppable attribute on the cells under draggable element to false
     cells.forEach((cell) => {
       if (cell) {
         cell.setAttribute("droppable", false);
@@ -396,20 +396,13 @@ function addDocumentEventListeners() {
         });
       });
 
-      // console.log(cellsVerticesAdjacent);
-
       cellsVerticesAdjacent.forEach((vertex) => {
         const className = `${vertex.coordinates[0]},${vertex.coordinates[1]}`;
         const parentDiv = document.querySelector(".playerOne-board");
         const div = parentDiv.querySelector(`[class*="${className}"].cell`);
         div.setAttribute("droppable", true);
-        // div.classList.add("ship-cell");
       });
 
-      //   console.log(cells);
-      //   console.log(cellsVertices);
-      //   console.log(cellsVerticesAdjacent);
-      //   console.log(playerOneBoard);
       const elementsBelow = document.elementsFromPoint(
         event.clientX - mouseDownOffsetHor,
         event.clientY - mouseDownOffsetVer,
@@ -483,7 +476,8 @@ function addDocumentEventListeners() {
         }
       }
 
-      makeUndroppable(identifyCellsToMakeDroppable());
+      const cells = identifyCellsToMakeDroppable();
+      makeUndroppable(cells);
 
       draggableElement.style.left = 0;
       draggableElement.style.top = 0;
