@@ -108,6 +108,18 @@ function GameboardModule() {
         shipLength: 4,
         shipId: 6,
       },
+      {
+        shipLength: 3,
+        shipId: 7,
+      },
+      {
+        shipLength: 2,
+        shipId: 8,
+      },
+      {
+        shipLength: 1,
+        shipId: 9,
+      },
     ];
 
     // For tests
