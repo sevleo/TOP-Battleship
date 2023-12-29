@@ -218,6 +218,7 @@ function GameboardModule() {
 
           if (position.length === ship.length) {
             ship.assignCoordinates(...positionCoordinates);
+            ship.setOrientation();
 
             position.forEach((p) => {
               p.occupied = true;

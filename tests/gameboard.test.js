@@ -55,6 +55,7 @@ describe("check adjacent tiles", () => {
 describe("testing attack function", () => {
   describe("1 length ship", () => {
     board.ships[0].assignCoordinates([1, 1]);
+    board.ships[0].setOrientation();
     test("test miss", () => {
       board.receiveAttack([1, 2]);
       expect(board.ships[0].isSunk()).toEqual(false);
@@ -67,6 +68,7 @@ describe("testing attack function", () => {
 
   describe("2 length ship", () => {
     board.ships[1].assignCoordinates([4, 5], [4, 6]);
+    board.ships[1].setOrientation();
     test("test miss", () => {
       board.receiveAttack([4, 4]);
       expect(board.ships[1].isSunk()).toEqual(false);
@@ -91,6 +93,7 @@ describe("testing attack function", () => {
 
   describe("3 length ship", () => {
     board.ships[2].assignCoordinates([6, 1], [6, 2], [6, 3]);
+    board.ships[2].setOrientation();
     test("test hit", () => {
       board.receiveAttack([6, 1]);
       expect(board.ships[2].isSunk()).toEqual(false);
@@ -114,6 +117,7 @@ describe("testing attack function", () => {
 
   describe("4 length ship", () => {
     board.ships[3].assignCoordinates([8, 3], [8, 4], [8, 5], [8, 6]);
+    board.ships[3].setOrientation();
     test("test hit", () => {
       board.receiveAttack([8, 4]);
       expect(board.ships[3].isSunk()).toEqual(false);

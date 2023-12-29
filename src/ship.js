@@ -21,7 +21,10 @@ const ShipModule = (() => {
 
       assignCoordinates(...args) {
         ship.coordinates = args;
+        // console.log(ship.coordinates);
+      },
 
+      setOrientation() {
         // Determine if ship position is horizontal or vertical
         if (ship.coordinates.length === 1) {
           this.position = "h";
