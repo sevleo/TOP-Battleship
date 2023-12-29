@@ -140,11 +140,15 @@ function GameboardModule() {
   function recordMissingShot(coordinates) {
     const missedShotVertex = findVertextObjectByCoordinates(coordinates);
     if (!missingShots.includes(missedShotVertex.coordinates)) {
+      missedShotVertex.missShot = true;
       missingShots.push(missedShotVertex.coordinates);
     }
     missedShotVertex.adjacencyList.forEach((element) => {
       if (!missingShots.includes(element.coordinates)) {
-        missingShots.push(element.coordinates);
+        if (!element.occupiedByShip) {
+          missingShots.push(element.coordinates);
+          element.missShotNeighbor = true;
+        }
       }
     });
   }
@@ -169,13 +173,15 @@ function GameboardModule() {
       ) {
         ship.hit();
         hitRegistered = true;
-        return true;
+        return hitRegistered;
       }
-      return false;
+      hitRegistered = false;
+      return hitRegistered;
     });
     if (!hitRegistered) {
       recordMissingShot(coordinates);
     }
+    return hitRegistered;
   }
 
   // Check if all ships on a board have been sunk

@@ -39,8 +39,7 @@ addDocumentEventListeners();
 document.addEventListener("keydown", (event) => {
   if (event.key === "c" || event.key === "C") {
     console.log(playerOneBoard);
-    console.log(playerOneBoard.ships[0]);
-    console.log(playerOneBoard.ships[1]);
+    console.log(playerTwoBoard);
   }
 });
 

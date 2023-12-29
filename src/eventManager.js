@@ -21,6 +21,36 @@ function addEventListeners() {
     const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
     playerTwoBoardDiv.classList.remove("locked");
   });
+  const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
+  const boardTwoCells = playerTwoBoardDiv.querySelectorAll(".cell");
+  boardTwoCells.forEach((cellDiv) => {
+    cellDiv.addEventListener("click", () => {
+      if (!playerTwoBoardDiv.classList.contains("locked")) {
+        const attackCoordinates = cellDiv.classList[0].split(",").map(Number);
+        const makeHit = playerTwoBoard.receiveAttack(attackCoordinates);
+        if (makeHit) {
+          cellDiv.classList.add("hit");
+        } else {
+          playerTwoBoard.board.vertices.forEach((vertex) => {
+            if (vertex.missShot) {
+              const missedCellDiv = DOMHandler.findDivByCoordinates(
+                `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+                playerTwoBoardDiv,
+              );
+              missedCellDiv.classList.add("miss");
+            }
+            if (vertex.missShotNeighbor) {
+              const missedCellDiv = DOMHandler.findDivByCoordinates(
+                `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+                playerTwoBoardDiv,
+              );
+              missedCellDiv.classList.add("miss-neigbour");
+            }
+          });
+        }
+      }
+    });
+  });
 }
 
 export default addEventListeners;

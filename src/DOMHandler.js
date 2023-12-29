@@ -367,6 +367,7 @@ const DOMHandler = (() => {
     });
   }
 
+  // Find the div element by coordinates in the format such as "4,7"
   function findDivByCoordinates(coordinates, parentDiv) {
     const div = parentDiv.querySelector(`[class*="${coordinates}"].cell`);
     return div;
@@ -402,7 +403,7 @@ const DOMHandler = (() => {
       ship.coordinates.forEach((c) => {
         const parentDivBoardTwo = document.querySelector(".playerTwo-board");
         const div = findDivByCoordinates(`${c[0]},${c[1]}`, parentDivBoardTwo);
-        div.classList.add("ship-cell");
+        // div.classList.add("ship-cell");
       });
     });
   }
