@@ -201,7 +201,6 @@ function addDocumentEventListeners() {
       }
     });
 
-    console.log(cellElement);
     if (cellElement === null) {
       return false;
     }
@@ -397,13 +396,13 @@ function addDocumentEventListeners() {
         draggableElement.style.top = `${event.clientY - offSetY}px`;
       }
     }
-
-    // console.log(originalElementBelow);
-    // console.log(elementBelow);
   };
 
   // Mouse up
   const onMouseUp = (event) => {
+    const ship = draggableElement
+      ? playerOneBoard.findShipById(draggableElement.id)
+      : null;
     if (elementBelow === originalElementBelow) {
       if (draggableElement) {
         const width = `${draggableElementRect.height}px`;
@@ -411,7 +410,7 @@ function addDocumentEventListeners() {
 
         draggableElement.style.width = width;
         draggableElement.style.height = height;
-        const ship = playerOneBoard.findShipById(draggableElement.id);
+
         if (height > width) {
           ship.position = "v";
         } else {
@@ -436,6 +435,14 @@ function addDocumentEventListeners() {
 
       const cells = identifyCellsToMakeDroppable(event);
       makeUndroppable(cells);
+
+      const newShipCoordinates = [];
+      cells.forEach((cell) => {
+        newShipCoordinates.push(
+          Array.from(cell.classList[0].split(",").map(Number)),
+        );
+      });
+      ship.assignCoordinates(newShipCoordinates);
 
       isDragging = false;
       draggableElement.style.left = 0;
