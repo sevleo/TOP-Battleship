@@ -4,6 +4,19 @@
 import gameLoop, { playerOneBoard } from ".";
 import DOMHandler from "./DOMHandler";
 
+function throttle(func, delay) {
+  let waiting = false;
+  return function () {
+    if (!waiting) {
+      func.apply(this, arguments);
+      waiting = true;
+      setTimeout(() => {
+        waiting = false;
+      }, delay);
+    }
+  };
+}
+
 function addEventListeners() {
   const randomizeButton = document.querySelector(".randomize");
   randomizeButton.addEventListener("click", () => {
@@ -16,6 +29,7 @@ export default addEventListeners;
 function addDocumentEventListeners() {
   let draggableElement = null;
   let draggableElementRect = null;
+  let lastDraggableElement = null;
 
   let isDragging = false;
   let offSetX;
@@ -135,21 +149,23 @@ function addDocumentEventListeners() {
         );
       }
 
-      lastShipElement.forEach((element) => {
-        if (element.classList.contains("cell")) {
-          const className = element.classList[0];
-          const array = className.split(",").map(Number);
-          const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+      if (lastShipElement) {
+        lastShipElement.forEach((element) => {
+          if (element.classList.contains("cell")) {
+            const className = element.classList[0];
+            const array = className.split(",").map(Number);
+            const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
 
-          vertex.adjacencyList.forEach((adjacency) => {
-            if (adjacency.occupiedByShip === true) {
-              if (elementBelow) {
-                noOverlap = false;
+            vertex.adjacencyList.forEach((adjacency) => {
+              if (adjacency.occupiedByShip === true) {
+                if (elementBelow) {
+                  noOverlap = false;
+                }
               }
-            }
-          });
-        }
-      });
+            });
+          }
+        });
+      }
     }
     return noOverlap;
   }
@@ -305,6 +321,7 @@ function addDocumentEventListeners() {
       if (element.classList.contains("draggable")) {
         draggableElement = element;
         draggableElementRect = draggableElement.getBoundingClientRect();
+        lastDraggableElement = element;
       }
     });
 
@@ -413,10 +430,28 @@ function addDocumentEventListeners() {
 
         draggableElementRect = draggableElement.getBoundingClientRect();
 
-        console.log(checkOtherShipOverlap(event));
         if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
           draggableElement.style.width = height;
           draggableElement.style.height = width;
+          draggableElement.classList.add("animating");
+          draggableElement.animate(
+            [
+              { transform: "translateX(0px)" },
+              { transform: "translateX(10px)" },
+              { transform: "translateX(-10px)" },
+              { transform: "translateX(0px)" },
+              { transform: "translateX(10px)" },
+              { transform: "translateX(-10px)" },
+              { transform: "translateX(0px)" },
+            ],
+            {
+              duration: 300,
+              easing: "ease-in-out",
+            },
+          );
+          setTimeout(() => {
+            lastDraggableElement.classList.remove("animating");
+          }, 300);
         } else if (draggableElementRect.width > draggableElementRect.height) {
           ship.position = "h";
         } else {
@@ -463,7 +498,9 @@ function addDocumentEventListeners() {
     updateDroppableAttribute();
   };
 
-  document.addEventListener("mousedown", onMouseDown);
+  const throttledMouseDown = throttle(onMouseDown, 200);
+
+  document.addEventListener("mousedown", throttledMouseDown);
   document.addEventListener("mousemove", onMouseMove);
   document.addEventListener("mouseup", onMouseUp);
 }

@@ -137,10 +137,12 @@ body {
 
 .ship.droppable {
   background-color: rgba(0, 255, 0, 0.5);
+  outline: 1px solid green;
 }
 
 .ship.undroppable {
   background-color: rgba(255, 0, 0, 0.5);
+  outline: 1px solid red;
 }
 
 .draggable {
@@ -187,14 +189,19 @@ body {
 }
 
 .dragging {
-  outline: 1px green solid;
+  /* outline: 1px green solid; */
   background-color: rgba(0, 255, 0, 0.5);
 }
 
-[droppable="true"] {
+/* [droppable="true"] {
   background-color: rgba(0, 128, 0, 0.2);
 }
 
 [droppable="false"] {
   background-color: rgba(255, 0, 0, 0.3);
+} */
+
+.animating {
+  background-color: rgba(255, 0, 0, 0.3);
+  outline: 1px solid red;
 }
