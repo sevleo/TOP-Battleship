@@ -27,7 +27,11 @@ function addEventListeners() {
     cellDiv.addEventListener("click", () => {
       if (!playerTwoBoardDiv.classList.contains("locked")) {
         const attackCoordinates = cellDiv.classList[0].split(",").map(Number);
-        const makeHit = playerTwoBoard.receiveAttack(attackCoordinates);
+        const makeHit = playerTwoBoard.receiveAttack(
+          attackCoordinates,
+          playerTwoBoardDiv,
+        );
+        // console.log(attackCoordinates);
         if (makeHit) {
           cellDiv.classList.add("hit");
         } else {

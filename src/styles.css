@@ -221,3 +221,8 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
 }
+
+.playerTwo-board .cell.sunk {
+  background-color: rgba(255, 0, 0, 0.2);
+  outline: 1px solid red;
+}

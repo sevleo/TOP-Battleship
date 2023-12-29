@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-continue */
 import ShipModule from "./ship";
 import Graph from "./DS_Graph";
+import DOMHandler from "./DOMHandler";
 
 function GameboardModule() {
   const board = new Graph();
@@ -165,13 +167,16 @@ function GameboardModule() {
   }
 
   // Register and process attacks
-  function receiveAttack(coordinates) {
+  function receiveAttack(coordinates, playerBoardDiv) {
     let hitRegistered = false;
     ships.some((ship) => {
       if (
         JSON.stringify(ship.coordinates).includes(JSON.stringify(coordinates))
       ) {
         ship.hit();
+        if (ship.isSunk()) {
+          DOMHandler.updateSunkShips(ship.coordinates, playerBoardDiv);
+        }
         hitRegistered = true;
         return hitRegistered;
       }

@@ -415,6 +415,17 @@ const DOMHandler = (() => {
     addEventListeners();
   }
 
+  function updateSunkShips(coordinates, boardDiv) {
+    coordinates.forEach((coordinate) => {
+      // console.log(coordinate);
+      const sunkShipDiv = findDivByCoordinates(
+        `${coordinate[0]},${coordinate[1]}`,
+        boardDiv,
+      );
+      sunkShipDiv.classList.add("sunk");
+    });
+  }
+
   return {
     playerOneBoard,
     playerTwoBoard,
@@ -422,6 +433,7 @@ const DOMHandler = (() => {
     playerTwoShips,
     createDom,
     findDivByCoordinates,
+    updateSunkShips,
   };
 })();
 
