@@ -54,18 +54,27 @@ function addDocumentEventListeners() {
   }
 
   // Find cells to change to "droppable = true" after drag & dropping a ship
-  function identifyCellsToMakeDroppable() {
+  function identifyCellsToMakeDroppable(event) {
     const shipObject = playerOneBoard.findShipById(draggableElement.id);
-    if (elementBelow !== null) {
-      if (elementBelow.getAttribute("droppable") === "true") {
-        elementBelow.append(draggableElement);
-        return findShipCells(
-          elementBelow,
-          shipObject.position,
-          shipObject.length - 1,
-        );
-      }
-      if (elementBelow.getAttribute("droppable") === "false") {
+    if (event.type === "mouseup") {
+      if (elementBelow !== null) {
+        if (elementBelow.getAttribute("droppable") === "true") {
+          elementBelow.append(draggableElement);
+          return findShipCells(
+            elementBelow,
+            shipObject.position,
+            shipObject.length - 1,
+          );
+        }
+        if (elementBelow.getAttribute("droppable") === "false") {
+          originalElementBelow.append(draggableElement);
+          return findShipCells(
+            originalElementBelow,
+            shipObject.position,
+            shipObject.length - 1,
+          );
+        }
+      } else {
         originalElementBelow.append(draggableElement);
         return findShipCells(
           originalElementBelow,
@@ -73,10 +82,12 @@ function addDocumentEventListeners() {
           shipObject.length - 1,
         );
       }
-    } else {
-      originalElementBelow.append(draggableElement);
+      return null;
+    }
+
+    if (event.type === "mousedown") {
       return findShipCells(
-        originalElementBelow,
+        draggableElement.parentElement,
         shipObject.position,
         shipObject.length - 1,
       );
@@ -198,6 +209,43 @@ function addDocumentEventListeners() {
     });
   }
 
+  // The cells under the draggable element will be made droppable when the mouse is down
+  function makeDroppable(cells) {
+    const cellsVertices = [];
+
+    // Set droppable attribute on the cells under draggable element to true
+    cells.forEach((cell) => {
+      cell.setAttribute("droppable", true);
+      const className = cell.classList[0];
+      const array = className.split(",").map(Number);
+      const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
+      cellsVertices.push(vertex);
+    });
+
+    /// Update the graph accordingly
+    cellsVertices.forEach((cellVertex) => {
+      cellVertex.occupiedByShip = false;
+      cellVertex.occupied = false;
+
+      // Update adjacent cells:
+      cellVertex.adjacencyList.forEach((adjacency) => {
+        // In the graph
+        adjacency.occupied = false;
+        adjacency.adjacencyList.forEach((adj) => {
+          if (adj.occupiedByShip) {
+            adjacency.occupied = true;
+          }
+        });
+        if (adjacency.occupied === false) {
+          const className = `${adjacency.coordinates[0]},${adjacency.coordinates[1]}`;
+          const parentDiv = document.querySelector(".playerOne-board");
+          const div = parentDiv.querySelector(`[class*="${className}"].cell`);
+          div.setAttribute("droppable", true);
+        }
+      });
+    });
+  }
+
   // The cells under the draggable element will be made undroppable when the mouse is up
   function makeUndroppable(cells) {
     const cellsVertices = [];
@@ -237,9 +285,9 @@ function addDocumentEventListeners() {
       event.clientY,
     );
 
-    elementsFromPoint.forEach((el) => {
-      if (el.classList.contains("draggable")) {
-        draggableElement = el;
+    elementsFromPoint.forEach((element) => {
+      if (element.classList.contains("draggable")) {
+        draggableElement = element;
         draggableElementRect = draggableElement.getBoundingClientRect();
       }
     });
@@ -251,20 +299,13 @@ function addDocumentEventListeners() {
       draggableElement.style.zIndex = 0;
       offSetX = event.clientX;
       offSetY = event.clientY;
-
       draggableElement.classList.add("dragging");
+
+      const cells = identifyCellsToMakeDroppable(event);
+      makeDroppable(cells);
 
       const parentRect = draggableElement.parentElement.getBoundingClientRect();
 
-      const cells = [];
-      const cellsVertices = [];
-      const cellsVerticesAdjacent = [];
-      const firstCell = draggableElement.parentElement;
-      let secondCell;
-      let thirdCell;
-      let fourthCell;
-
-      cells.push(firstCell);
       if (offSetX > parentRect.x + 120) {
         mouseDownOffsetHor = 120;
       } else if (offSetX > parentRect.x + 80) {
@@ -279,134 +320,11 @@ function addDocumentEventListeners() {
         mouseDownOffsetVer = 40;
       }
 
-      // If width of draggable equal or greater than 80, grab 2nd element and put it in the cells list
-      if (draggableElementRect.width >= 80) {
-        const cellElements = document.elementsFromPoint(
-          event.clientX - mouseDownOffsetHor + 40,
-          event.clientY - mouseDownOffsetVer,
-        );
-        cellElements.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            secondCell = element;
-            cells.push(secondCell);
-          }
-        });
-      }
-
-      // If width of draggable equal or greater than 120, grab 3rd element and put it in the cells list
-      if (draggableElementRect.width >= 120) {
-        const cellElements = document.elementsFromPoint(
-          event.clientX - mouseDownOffsetHor + 80,
-          event.clientY - mouseDownOffsetVer,
-        );
-        cellElements.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            thirdCell = element;
-            cells.push(thirdCell);
-          }
-        });
-      }
-
-      // If width of draggable equal or greater than 160, grab 4th element and put it in the cells list
-      if (draggableElementRect.width >= 160) {
-        const cellElements = document.elementsFromPoint(
-          event.clientX - mouseDownOffsetHor + 120,
-          event.clientY - mouseDownOffsetVer,
-        );
-        cellElements.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            fourthCell = element;
-            cells.push(fourthCell);
-          }
-        });
-      }
-
-      // If height of draggable equal or greater than 80, grab 2nd element and put it in the cells list
-      if (draggableElementRect.height >= 80) {
-        const cellElements = document.elementsFromPoint(
-          event.clientX - mouseDownOffsetHor,
-          event.clientY - mouseDownOffsetVer + 40,
-        );
-        cellElements.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            secondCell = element;
-            cells.push(secondCell);
-          }
-        });
-      }
-
-      // If height of draggable equal or greater than 120, grab 3rd element and put it in the cells list
-      if (draggableElementRect.height >= 120) {
-        const cellElements = document.elementsFromPoint(
-          event.clientX - mouseDownOffsetHor,
-          event.clientY - mouseDownOffsetVer + 80,
-        );
-        cellElements.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            thirdCell = element;
-            cells.push(thirdCell);
-          }
-        });
-      }
-
-      // If height of draggable equal or greater than 160, grab 4th element and put it in the cells list
-      if (draggableElementRect.height >= 160) {
-        const cellElements = document.elementsFromPoint(
-          event.clientX - mouseDownOffsetHor,
-          event.clientY - mouseDownOffsetVer + 120,
-        );
-        cellElements.forEach((element) => {
-          if (element.classList.contains("cell")) {
-            fourthCell = element;
-            cells.push(fourthCell);
-          }
-        });
-      }
-
-      // Change the droppable attribute of each cell under draggable element to true
-      cells.forEach((cell) => {
-        cell.setAttribute("droppable", true);
-        const className = cell.classList[0];
-        const array = className.split(",").map(Number);
-        const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
-        cellsVertices.push(vertex);
-      });
-
-      // Change the droppable attribute of each cell's adjacent cell to true (except those occupied or neighbored to ships)
-      cellsVertices.forEach((cellVertex) => {
-        cellVertex.occupiedByShip = false;
-        cellVertex.occupied = false;
-        cellVertex.adjacencyList.forEach((adjacency) => {
-          if (!cellsVertices.includes(adjacency)) {
-            adjacency.occupied = false;
-            adjacency.adjacencyList.forEach((adj) => {
-              if (!cellsVertices.includes(adj)) {
-                if (adj.occupiedByShip) {
-                  adjacency.occupied = true;
-                }
-              }
-            });
-            if (
-              adjacency.occupied === false &&
-              !cellsVerticesAdjacent.includes(adjacency)
-            ) {
-              cellsVerticesAdjacent.push(adjacency);
-            }
-          }
-        });
-      });
-
-      cellsVerticesAdjacent.forEach((vertex) => {
-        const className = `${vertex.coordinates[0]},${vertex.coordinates[1]}`;
-        const parentDiv = document.querySelector(".playerOne-board");
-        const div = parentDiv.querySelector(`[class*="${className}"].cell`);
-        div.setAttribute("droppable", true);
-      });
-
       const elementsBelow = document.elementsFromPoint(
         event.clientX - mouseDownOffsetHor,
         event.clientY - mouseDownOffsetVer,
       );
+
       elementsBelow.forEach((element) => {
         if (element.classList.contains("cell")) {
           if (element.getAttribute("droppable") === "true") {
@@ -424,11 +342,11 @@ function addDocumentEventListeners() {
   // Mouse move
   const onMouseMove = (event) => {
     if (isDragging) {
-      const elementsBelow = document.elementsFromPoint(
+      const elementsFromPoint = document.elementsFromPoint(
         event.clientX - mouseDownOffsetHor,
         event.clientY - mouseDownOffsetVer,
       );
-      elementsBelow.forEach((element) => {
+      elementsFromPoint.forEach((element) => {
         if (element.classList.contains("cell")) {
           if (element.getAttribute("droppable") === "true") {
             elementBelow = element;
@@ -442,6 +360,9 @@ function addDocumentEventListeners() {
         draggableElement.style.top = `${event.clientY - offSetY}px`;
       }
     }
+
+    console.log(originalElementBelow);
+    console.log(elementBelow);
   };
 
   // Mouse up
@@ -465,8 +386,6 @@ function addDocumentEventListeners() {
     }
 
     if (isDragging) {
-      isDragging = false;
-
       if (elementBelow) {
         if (!checkOtherShipOverlap(event)) {
           elementBelow.setAttribute("droppable", false);
@@ -476,18 +395,18 @@ function addDocumentEventListeners() {
         }
       }
 
-      const cells = identifyCellsToMakeDroppable();
+      const cells = identifyCellsToMakeDroppable(event);
       makeUndroppable(cells);
 
+      isDragging = false;
       draggableElement.style.left = 0;
       draggableElement.style.top = 0;
       draggableElement.style.zIndex = 5;
-      draggableElement.classList.remove("dragging");
-
       offSetX = null;
       offSetY = null;
       mouseDownOffsetHor = 0;
       mouseDownOffsetVer = 0;
+      draggableElement.classList.remove("dragging");
     }
     draggableElement = null;
     draggableElementRect = null;
