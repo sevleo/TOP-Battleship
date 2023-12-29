@@ -32,6 +32,7 @@ function addDocumentEventListeners() {
   let lastDraggableElement = null;
 
   let isDragging = false;
+  let movedBy = 0;
   let offSetX;
   let offSetY;
   let mouseDownOffsetHor = 0;
@@ -411,6 +412,7 @@ function addDocumentEventListeners() {
       if (draggableElement) {
         draggableElement.style.left = `${event.clientX - offSetX}px`;
         draggableElement.style.top = `${event.clientY - offSetY}px`;
+        movedBy = event.clientX - offSetX + (event.clientY - offSetY);
       }
     }
   };
@@ -420,7 +422,9 @@ function addDocumentEventListeners() {
     const ship = draggableElement
       ? playerOneBoard.findShipById(draggableElement.id)
       : null;
-    if (elementBelow === originalElementBelow) {
+
+    // Handle click to change orientation
+    if (movedBy === 0) {
       if (draggableElement) {
         const width = `${draggableElementRect.height}px`;
         const height = `${draggableElementRect.width}px`;
@@ -460,6 +464,7 @@ function addDocumentEventListeners() {
       }
     }
 
+    // Handle dragging to change position of the ship
     if (isDragging) {
       draggableElement.classList.remove("droppable");
       draggableElement.classList.remove("undroppable");
@@ -484,6 +489,7 @@ function addDocumentEventListeners() {
       ship.assignCoordinates(newShipCoordinates);
 
       isDragging = false;
+      movedBy = 0;
       draggableElement.style.left = 0;
       draggableElement.style.top = 0;
       draggableElement.style.zIndex = 5;
