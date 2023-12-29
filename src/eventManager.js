@@ -24,6 +24,7 @@ function addDocumentEventListeners() {
   let mouseDownOffsetVer = 0;
   let originalElementBelow = null;
   let elementBelow = null;
+  let previousElementBelow = null;
 
   // Find cells under the ship
   function findShipCells(firstElement, orientation, length) {
@@ -154,7 +155,7 @@ function addDocumentEventListeners() {
   }
 
   // Checks if the element is getting dropped within the borders of the board
-  function checkWithinBorders() {
+  function checkWithinBorders(event) {
     const elementBelowCoordinates = elementBelow.classList[0]
       .split(",")
       .map(Number);
@@ -187,6 +188,22 @@ function addDocumentEventListeners() {
       if (elementBelowCoordinates[1] > 7) {
         return false;
       }
+    }
+    const outOfBoardElements = document.elementsFromPoint(
+      event.clientX,
+      event.clientY,
+    );
+    let cellElement = null;
+    outOfBoardElements.forEach((element) => {
+      if (element.classList.contains("cell")) {
+        // console.log(element);
+        cellElement = element;
+      }
+    });
+
+    console.log(cellElement);
+    if (cellElement === null) {
+      return false;
     }
     return true;
   }
@@ -333,6 +350,7 @@ function addDocumentEventListeners() {
           } else {
             elementBelow = null;
             originalElementBelow = null;
+            previousElementBelow = null;
           }
         }
       });
@@ -347,22 +365,41 @@ function addDocumentEventListeners() {
         event.clientY - mouseDownOffsetVer,
       );
       elementsFromPoint.forEach((element) => {
-        if (element.classList.contains("cell")) {
-          if (element.getAttribute("droppable") === "true") {
-            elementBelow = element;
-          } else {
-            elementBelow = null;
+        if (
+          element.classList.contains("cell") &&
+          element.getAttribute("droppable")
+        ) {
+          previousElementBelow = elementBelow;
+          if (previousElementBelow.classList.contains("temp")) {
+            previousElementBelow.setAttribute("droppable", true);
+            draggableElement.classList.remove("undroppable");
+            previousElementBelow.classList.remove("temp");
           }
+          elementBelow = element;
         }
       });
+
+      if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
+        elementBelow.setAttribute("droppable", false);
+        elementBelow.classList.add("temp");
+      }
+
+      if (elementBelow.getAttribute("droppable") === "false") {
+        draggableElement.classList.add("undroppable");
+        draggableElement.classList.remove("droppable");
+      } else {
+        draggableElement.classList.add("droppable");
+        draggableElement.classList.remove("undroppable");
+      }
+
       if (draggableElement) {
         draggableElement.style.left = `${event.clientX - offSetX}px`;
         draggableElement.style.top = `${event.clientY - offSetY}px`;
       }
     }
 
-    console.log(originalElementBelow);
-    console.log(elementBelow);
+    // console.log(originalElementBelow);
+    // console.log(elementBelow);
   };
 
   // Mouse up
@@ -386,11 +423,13 @@ function addDocumentEventListeners() {
     }
 
     if (isDragging) {
+      draggableElement.classList.remove("droppable");
+      draggableElement.classList.remove("undroppable");
       if (elementBelow) {
         if (!checkOtherShipOverlap(event)) {
           elementBelow.setAttribute("droppable", false);
         }
-        if (!checkWithinBorders()) {
+        if (!checkWithinBorders(event)) {
           elementBelow.setAttribute("droppable", false);
         }
       }

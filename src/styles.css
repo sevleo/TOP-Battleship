@@ -135,6 +135,14 @@ body {
   outline: 1px solid blue;
 }
 
+.ship.droppable {
+  background-color: rgba(0, 255, 0, 0.5);
+}
+
+.ship.undroppable {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
 .draggable {
   cursor: move !important;
   z-index: 5;
@@ -158,11 +166,6 @@ body {
 /* .draggable {
   cursor: alias;
 } */
-
-[droppable="true"] {
-  /* border: 2px dashed #aaa; */
-  /* pointer-events: all; */
-}
 
 .mark_col {
   position: absolute;
