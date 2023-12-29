@@ -137,7 +137,8 @@ body {
   outline: 0.5px solid rgba(118, 118, 118, 0.2);
 }
 
-.playerTwo-board:not(.locked) .cell:hover {
+.playerTwo-board:not(.locked)
+  .cell:not(.miss):not(.cell.miss-neigbour):not(.hit):hover {
   cursor: crosshair;
   outline: 1.5px solid black;
 }
@@ -224,5 +225,5 @@ body {
 
 .playerTwo-board .cell.sunk {
   background-color: rgba(255, 0, 0, 0.2);
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
 }

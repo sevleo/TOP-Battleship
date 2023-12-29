@@ -1,5 +1,9 @@
 import GameboardModule from "../src/gameboard";
 
+jest.mock("../src/DOMHandler", () => ({
+  updateSunkShips: jest.fn(),
+}));
+
 const ships = [
   {
     shipLength: 1,

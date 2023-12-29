@@ -166,6 +166,27 @@ function GameboardModule() {
     return ship;
   }
 
+  function updateAdjacentCells(ship, playerBoardDiv) {
+    ship.coordinates.forEach((coordinate) => {
+      const vertex = findVertextObjectByCoordinates(coordinate);
+      vertex.adjacencyList.forEach((adj) => {
+        if (
+          adj.missShot === false &&
+          adj.missShotNeighbor === false &&
+          !missingShots.includes(adj.coordinates) &&
+          adj.occupiedByShip === false
+        ) {
+          adj.missShotNeighbor = true;
+          const missedCellDiv = DOMHandler.findDivByCoordinates(
+            `${adj.coordinates[0]},${adj.coordinates[1]}`,
+            playerBoardDiv,
+          );
+          missedCellDiv.classList.add("miss-neigbour");
+        }
+      });
+    });
+  }
+
   // Register and process attacks
   function receiveAttack(coordinates, playerBoardDiv) {
     let hitRegistered = false;
@@ -176,6 +197,7 @@ function GameboardModule() {
         ship.hit();
         if (ship.isSunk()) {
           DOMHandler.updateSunkShips(ship.coordinates, playerBoardDiv);
+          updateAdjacentCells(ship, playerBoardDiv);
         }
         hitRegistered = true;
         return hitRegistered;

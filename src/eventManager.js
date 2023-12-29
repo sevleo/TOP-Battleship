@@ -5,11 +5,13 @@ import gameLoop, { playerOneBoard, playerTwoBoard } from ".";
 import DOMHandler from "./DOMHandler";
 
 function addEventListeners() {
+  // Event listener on randomize button
   const randomizeButton = document.querySelector(".randomize");
   randomizeButton.addEventListener("click", () => {
     gameLoop();
   });
 
+  // Event listener on start button
   const startButton = document.querySelector(".start-game");
   startButton.addEventListener("click", () => {
     console.log("start");
@@ -21,36 +23,42 @@ function addEventListeners() {
     const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
     playerTwoBoardDiv.classList.remove("locked");
   });
+
+  // Event listeners on opponent board cells
   const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
   const boardTwoCells = playerTwoBoardDiv.querySelectorAll(".cell");
   boardTwoCells.forEach((cellDiv) => {
     cellDiv.addEventListener("click", () => {
       if (!playerTwoBoardDiv.classList.contains("locked")) {
-        const attackCoordinates = cellDiv.classList[0].split(",").map(Number);
-        const makeHit = playerTwoBoard.receiveAttack(
-          attackCoordinates,
-          playerTwoBoardDiv,
-        );
-        // console.log(attackCoordinates);
-        if (makeHit) {
-          cellDiv.classList.add("hit");
-        } else {
-          playerTwoBoard.board.vertices.forEach((vertex) => {
-            if (vertex.missShot) {
-              const missedCellDiv = DOMHandler.findDivByCoordinates(
-                `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
-                playerTwoBoardDiv,
-              );
-              missedCellDiv.classList.add("miss");
-            }
-            if (vertex.missShotNeighbor) {
-              const missedCellDiv = DOMHandler.findDivByCoordinates(
-                `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
-                playerTwoBoardDiv,
-              );
-              missedCellDiv.classList.add("miss-neigbour");
-            }
-          });
+        if (
+          !cellDiv.classList.contains("miss-neigbour") &&
+          !cellDiv.classList.contains("hit")
+        ) {
+          const attackCoordinates = cellDiv.classList[0].split(",").map(Number);
+          const makeHit = playerTwoBoard.receiveAttack(
+            attackCoordinates,
+            playerTwoBoardDiv,
+          );
+          if (makeHit) {
+            cellDiv.classList.add("hit");
+          } else {
+            playerTwoBoard.board.vertices.forEach((vertex) => {
+              if (vertex.missShot) {
+                const missedCellDiv = DOMHandler.findDivByCoordinates(
+                  `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+                  playerTwoBoardDiv,
+                );
+                missedCellDiv.classList.add("miss");
+              }
+              if (vertex.missShotNeighbor) {
+                const missedCellDiv = DOMHandler.findDivByCoordinates(
+                  `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+                  playerTwoBoardDiv,
+                );
+                missedCellDiv.classList.add("miss-neigbour");
+              }
+            });
+          }
         }
       }
     });
