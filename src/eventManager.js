@@ -411,13 +411,17 @@ function addDocumentEventListeners() {
         draggableElement.style.width = width;
         draggableElement.style.height = height;
 
-        if (height > width) {
-          ship.position = "v";
-        } else {
+        draggableElementRect = draggableElement.getBoundingClientRect();
+
+        console.log(checkOtherShipOverlap(event));
+        if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
+          draggableElement.style.width = height;
+          draggableElement.style.height = width;
+        } else if (draggableElementRect.width > draggableElementRect.height) {
           ship.position = "h";
+        } else {
+          ship.position = "v";
         }
-        console.log(ship);
-        console.log(elementBelow);
       }
     }
 
