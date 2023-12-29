@@ -48,7 +48,14 @@ const DOMHandler = (() => {
                 },
                 {
                   type: "div",
-                  class: "playerTwo-board",
+                  classes: [
+                    {
+                      class: "playerTwo-board",
+                    },
+                    {
+                      class: "locked",
+                    },
+                  ],
                 },
                 {
                   type: "div",
@@ -73,6 +80,11 @@ const DOMHandler = (() => {
       const newElement = document.createElement(element.type);
       if (element.class) {
         newElement.classList.add(element.class);
+      }
+      if (element.classes) {
+        element.classes.forEach((item) => {
+          newElement.classList.add(item.class);
+        });
       }
       if (element.textContent) {
         newElement.textContent = element.textContent;
@@ -363,7 +375,6 @@ const DOMHandler = (() => {
   function drawShips() {
     const parentDivBoardOne = document.querySelector(".playerOne-board");
     DOMHandler.playerOneShips.forEach((ship) => {
-      // console.log(`${ship.coordinates[0][0]},${ship.coordinates[0][1]}`);
       const div = findDivByCoordinates(
         `${ship.coordinates[0][0]},${ship.coordinates[0][1]}`,
         parentDivBoardOne,
@@ -373,8 +384,6 @@ const DOMHandler = (() => {
       shipDiv.classList.add("ship");
       shipDiv.classList.add("draggable");
       shipDiv.setAttribute("id", ship.id);
-      // shipDiv.setAttribute("draggable", true);
-      // shipDiv.setAttribute("draggable", true);
 
       if (ship.position === "h") {
         const width = 40 * ship.length;
@@ -387,16 +396,6 @@ const DOMHandler = (() => {
         shipDiv.style.width = "40px";
       }
       div.append(shipDiv);
-
-      ship.coordinates.forEach((c) => {
-        const className = `${c[0]},${c[1]}`;
-        const shipCells = Array.from(
-          parentDivBoardOne.getElementsByTagName("div"),
-        ).filter((elem) => elem.classList.contains(className));
-        shipCells.forEach((element) => {
-          // element.classList.add("ship-cell");
-        });
-      });
     });
 
     DOMHandler.playerTwoShips.forEach((ship) => {

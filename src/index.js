@@ -5,6 +5,7 @@ import GameboardModule from "./gameboard";
 import { addDocumentEventListeners } from "./eventManager";
 
 let playerOneBoard = null;
+let playerTwoBoard = null;
 
 function gameLoop() {
   const main = document.querySelector(".main");
@@ -15,11 +16,13 @@ function gameLoop() {
   playerOneBoard.createBoard();
   playerOneBoard.createShips();
   playerOneBoard.positionShips();
+  playerOneBoard.locked = false;
 
-  const playerTwoBoard = GameboardModule();
+  playerTwoBoard = GameboardModule();
   playerTwoBoard.createBoard();
   playerTwoBoard.createShips();
   playerTwoBoard.positionShips();
+  playerTwoBoard.locked = true;
 
   DOMHandler.playerOneBoard = playerOneBoard.board.vertices;
   DOMHandler.playerOneShips = playerOneBoard.ships;
@@ -42,4 +45,4 @@ document.addEventListener("keydown", (event) => {
 });
 
 export default gameLoop;
-export { playerOneBoard };
+export { playerOneBoard, playerTwoBoard };

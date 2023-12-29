@@ -91,6 +91,16 @@ body {
   grid-row: 1 / 2;
 }
 
+.playerOne-board.locked {
+  background-color: rgba(174, 174, 174, 0.3);
+  outline: 1px solid black;
+}
+
+.playerTwo-board.locked {
+  background-color: rgba(174, 174, 174, 0.3);
+  outline: 1px solid black;
+}
+
 .player-one-board-name {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
@@ -127,7 +137,6 @@ body {
 }
 
 .ship {
-  /* z-index: 2; */
   position: absolute;
   left: 0;
   top: 0;
@@ -146,15 +155,12 @@ body {
 }
 
 .draggable {
-  cursor: move !important;
   z-index: 5;
-  /* pointer-events: all;
-  touch-action: all; */
 }
 
-/* .ship:hover {
-  cursor: move;
-} */
+.playerOne-board:not(.locked) .draggable {
+  cursor: move !important;
+}
 
 [draggable="true"] {
   cursor: move !important;
@@ -164,10 +170,6 @@ body {
   z-index: 9999;
   cursor: move !important;
 }
-
-/* .draggable {
-  cursor: alias;
-} */
 
 .mark_col {
   position: absolute;
@@ -189,17 +191,8 @@ body {
 }
 
 .dragging {
-  /* outline: 1px green solid; */
   background-color: rgba(0, 255, 0, 0.5);
 }
-
-/* [droppable="true"] {
-  background-color: rgba(0, 128, 0, 0.2);
-}
-
-[droppable="false"] {
-  background-color: rgba(255, 0, 0, 0.3);
-} */
 
 .animating {
   background-color: rgba(255, 0, 0, 0.3);

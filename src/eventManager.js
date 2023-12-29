@@ -1,8 +1,29 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 // eslint-disable-next-line import/no-cycle
-import gameLoop, { playerOneBoard } from ".";
+import gameLoop, { playerOneBoard, playerTwoBoard } from ".";
 import DOMHandler from "./DOMHandler";
+
+function addEventListeners() {
+  const randomizeButton = document.querySelector(".randomize");
+  randomizeButton.addEventListener("click", () => {
+    gameLoop();
+  });
+
+  const startButton = document.querySelector(".start-game");
+  startButton.addEventListener("click", () => {
+    console.log("start");
+    console.log(playerOneBoard);
+    console.log(playerTwoBoard);
+    playerOneBoard.locked = true;
+    const playerOneBoardDiv = document.querySelector(".playerOne-board");
+    playerOneBoardDiv.classList.add("locked");
+    const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
+    playerTwoBoardDiv.classList.remove("locked");
+  });
+}
+
+export default addEventListeners;
 
 function throttle(func, delay) {
   let waiting = false;
@@ -16,15 +37,6 @@ function throttle(func, delay) {
     }
   };
 }
-
-function addEventListeners() {
-  const randomizeButton = document.querySelector(".randomize");
-  randomizeButton.addEventListener("click", () => {
-    gameLoop();
-  });
-}
-
-export default addEventListeners;
 
 function addDocumentEventListeners() {
   let draggableElement = null;
@@ -313,195 +325,202 @@ function addDocumentEventListeners() {
 
   // Mouse down
   const onMouseDown = (event) => {
-    const elementsFromPoint = document.elementsFromPoint(
-      event.clientX,
-      event.clientY,
-    );
-
-    elementsFromPoint.forEach((element) => {
-      if (element.classList.contains("draggable")) {
-        draggableElement = element;
-        draggableElementRect = draggableElement.getBoundingClientRect();
-        lastDraggableElement = element;
-      }
-    });
-
-    if (draggableElement) {
-      isDragging = true;
-      draggableElement.style.left = 0;
-      draggableElement.style.top = 0;
-      draggableElement.style.zIndex = 0;
-      offSetX = event.clientX;
-      offSetY = event.clientY;
-      draggableElement.classList.add("dragging");
-
-      const cells = identifyCellsToMakeDroppable(event);
-      makeDroppable(cells);
-
-      const parentRect = draggableElement.parentElement.getBoundingClientRect();
-
-      if (offSetX > parentRect.x + 120) {
-        mouseDownOffsetHor = 120;
-      } else if (offSetX > parentRect.x + 80) {
-        mouseDownOffsetHor = 80;
-      } else if (offSetX > parentRect.x + 40) {
-        mouseDownOffsetHor = 40;
-      } else if (offSetY > parentRect.y + 120) {
-        mouseDownOffsetVer = 120;
-      } else if (offSetY > parentRect.y + 80) {
-        mouseDownOffsetVer = 80;
-      } else if (offSetY > parentRect.y + 40) {
-        mouseDownOffsetVer = 40;
-      }
-
-      const elementsBelow = document.elementsFromPoint(
-        event.clientX - mouseDownOffsetHor,
-        event.clientY - mouseDownOffsetVer,
+    if (playerOneBoard.locked === false) {
+      const elementsFromPoint = document.elementsFromPoint(
+        event.clientX,
+        event.clientY,
       );
 
-      elementsBelow.forEach((element) => {
-        if (element.classList.contains("cell")) {
-          if (element.getAttribute("droppable") === "true") {
-            elementBelow = element;
-            originalElementBelow = element;
-          } else {
-            elementBelow = null;
-            originalElementBelow = null;
-            previousElementBelow = null;
-          }
+      elementsFromPoint.forEach((element) => {
+        if (element.classList.contains("draggable")) {
+          draggableElement = element;
+          draggableElementRect = draggableElement.getBoundingClientRect();
+          lastDraggableElement = element;
         }
       });
+
+      if (draggableElement) {
+        isDragging = true;
+        draggableElement.style.left = 0;
+        draggableElement.style.top = 0;
+        draggableElement.style.zIndex = 0;
+        offSetX = event.clientX;
+        offSetY = event.clientY;
+        draggableElement.classList.add("dragging");
+
+        const cells = identifyCellsToMakeDroppable(event);
+        makeDroppable(cells);
+
+        const parentRect =
+          draggableElement.parentElement.getBoundingClientRect();
+
+        if (offSetX > parentRect.x + 120) {
+          mouseDownOffsetHor = 120;
+        } else if (offSetX > parentRect.x + 80) {
+          mouseDownOffsetHor = 80;
+        } else if (offSetX > parentRect.x + 40) {
+          mouseDownOffsetHor = 40;
+        } else if (offSetY > parentRect.y + 120) {
+          mouseDownOffsetVer = 120;
+        } else if (offSetY > parentRect.y + 80) {
+          mouseDownOffsetVer = 80;
+        } else if (offSetY > parentRect.y + 40) {
+          mouseDownOffsetVer = 40;
+        }
+
+        const elementsBelow = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor,
+          event.clientY - mouseDownOffsetVer,
+        );
+
+        elementsBelow.forEach((element) => {
+          if (element.classList.contains("cell")) {
+            if (element.getAttribute("droppable") === "true") {
+              elementBelow = element;
+              originalElementBelow = element;
+            } else {
+              elementBelow = null;
+              originalElementBelow = null;
+              previousElementBelow = null;
+            }
+          }
+        });
+      }
     }
   };
 
   // Mouse move
   const onMouseMove = (event) => {
-    if (isDragging) {
-      const elementsFromPoint = document.elementsFromPoint(
-        event.clientX - mouseDownOffsetHor,
-        event.clientY - mouseDownOffsetVer,
-      );
-      elementsFromPoint.forEach((element) => {
-        if (
-          element.classList.contains("cell") &&
-          element.getAttribute("droppable")
-        ) {
-          previousElementBelow = elementBelow;
-          if (previousElementBelow.classList.contains("temp")) {
-            previousElementBelow.setAttribute("droppable", true);
-            draggableElement.classList.remove("undroppable");
-            previousElementBelow.classList.remove("temp");
+    if (playerOneBoard.locked === false) {
+      if (isDragging) {
+        const elementsFromPoint = document.elementsFromPoint(
+          event.clientX - mouseDownOffsetHor,
+          event.clientY - mouseDownOffsetVer,
+        );
+        elementsFromPoint.forEach((element) => {
+          if (
+            element.classList.contains("cell") &&
+            element.getAttribute("droppable")
+          ) {
+            previousElementBelow = elementBelow;
+            if (previousElementBelow.classList.contains("temp")) {
+              previousElementBelow.setAttribute("droppable", true);
+              draggableElement.classList.remove("undroppable");
+              previousElementBelow.classList.remove("temp");
+            }
+            elementBelow = element;
           }
-          elementBelow = element;
+        });
+
+        if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
+          elementBelow.setAttribute("droppable", false);
+          elementBelow.classList.add("temp");
         }
-      });
 
-      if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
-        elementBelow.setAttribute("droppable", false);
-        elementBelow.classList.add("temp");
-      }
+        if (elementBelow.getAttribute("droppable") === "false") {
+          draggableElement.classList.add("undroppable");
+          draggableElement.classList.remove("droppable");
+        } else {
+          draggableElement.classList.add("droppable");
+          draggableElement.classList.remove("undroppable");
+        }
 
-      if (elementBelow.getAttribute("droppable") === "false") {
-        draggableElement.classList.add("undroppable");
-        draggableElement.classList.remove("droppable");
-      } else {
-        draggableElement.classList.add("droppable");
-        draggableElement.classList.remove("undroppable");
-      }
-
-      if (draggableElement) {
-        draggableElement.style.left = `${event.clientX - offSetX}px`;
-        draggableElement.style.top = `${event.clientY - offSetY}px`;
-        movedBy = event.clientX - offSetX + (event.clientY - offSetY);
+        if (draggableElement) {
+          draggableElement.style.left = `${event.clientX - offSetX}px`;
+          draggableElement.style.top = `${event.clientY - offSetY}px`;
+          movedBy = event.clientX - offSetX + (event.clientY - offSetY);
+        }
       }
     }
   };
 
   // Mouse up
   const onMouseUp = (event) => {
-    const ship = draggableElement
-      ? playerOneBoard.findShipById(draggableElement.id)
-      : null;
+    if (playerOneBoard.locked === false) {
+      const ship = draggableElement
+        ? playerOneBoard.findShipById(draggableElement.id)
+        : null;
 
-    // Handle click to change orientation
-    if (movedBy === 0) {
-      if (draggableElement) {
-        const width = `${draggableElementRect.height}px`;
-        const height = `${draggableElementRect.width}px`;
+      // Handle click to change orientation
+      if (movedBy === 0) {
+        if (draggableElement) {
+          const width = `${draggableElementRect.height}px`;
+          const height = `${draggableElementRect.width}px`;
 
-        draggableElement.style.width = width;
-        draggableElement.style.height = height;
+          draggableElement.style.width = width;
+          draggableElement.style.height = height;
 
-        draggableElementRect = draggableElement.getBoundingClientRect();
+          draggableElementRect = draggableElement.getBoundingClientRect();
 
-        if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
-          draggableElement.style.width = height;
-          draggableElement.style.height = width;
-          draggableElement.classList.add("animating");
-          draggableElement.animate(
-            [
-              { transform: "translateX(0px)" },
-              { transform: "translateX(10px)" },
-              { transform: "translateX(-10px)" },
-              { transform: "translateX(0px)" },
-              { transform: "translateX(10px)" },
-              { transform: "translateX(-10px)" },
-              { transform: "translateX(0px)" },
-            ],
-            {
-              duration: 300,
-              easing: "ease-in-out",
-            },
+          if (!checkOtherShipOverlap(event) || !checkWithinBorders(event)) {
+            draggableElement.style.width = height;
+            draggableElement.style.height = width;
+            draggableElement.classList.add("animating");
+            draggableElement.animate(
+              [
+                { transform: "translateX(0px)" },
+                { transform: "translateX(10px)" },
+                { transform: "translateX(-10px)" },
+                { transform: "translateX(0px)" },
+                { transform: "translateX(10px)" },
+                { transform: "translateX(-10px)" },
+                { transform: "translateX(0px)" },
+              ],
+              {
+                duration: 300,
+                easing: "ease-in-out",
+              },
+            );
+            setTimeout(() => {
+              lastDraggableElement.classList.remove("animating");
+            }, 300);
+          } else if (draggableElementRect.width > draggableElementRect.height) {
+            ship.position = "h";
+          } else {
+            ship.position = "v";
+          }
+        }
+      }
+
+      // Handle dragging to change position of the ship
+      if (isDragging) {
+        draggableElement.classList.remove("droppable");
+        draggableElement.classList.remove("undroppable");
+        if (elementBelow) {
+          if (!checkOtherShipOverlap(event)) {
+            elementBelow.setAttribute("droppable", false);
+          }
+          if (!checkWithinBorders(event)) {
+            elementBelow.setAttribute("droppable", false);
+          }
+        }
+
+        const cells = identifyCellsToMakeDroppable(event);
+        makeUndroppable(cells);
+
+        const newShipCoordinates = [];
+        cells.forEach((cell) => {
+          newShipCoordinates.push(
+            Array.from(cell.classList[0].split(",").map(Number)),
           );
-          setTimeout(() => {
-            lastDraggableElement.classList.remove("animating");
-          }, 300);
-        } else if (draggableElementRect.width > draggableElementRect.height) {
-          ship.position = "h";
-        } else {
-          ship.position = "v";
-        }
+        });
+        ship.assignCoordinates(newShipCoordinates);
+
+        isDragging = false;
+        movedBy = 0;
+        draggableElement.style.left = 0;
+        draggableElement.style.top = 0;
+        draggableElement.style.zIndex = 5;
+        offSetX = null;
+        offSetY = null;
+        mouseDownOffsetHor = 0;
+        mouseDownOffsetVer = 0;
+        draggableElement.classList.remove("dragging");
       }
+      draggableElement = null;
+      draggableElementRect = null;
+      updateDroppableAttribute();
     }
-
-    // Handle dragging to change position of the ship
-    if (isDragging) {
-      draggableElement.classList.remove("droppable");
-      draggableElement.classList.remove("undroppable");
-      if (elementBelow) {
-        if (!checkOtherShipOverlap(event)) {
-          elementBelow.setAttribute("droppable", false);
-        }
-        if (!checkWithinBorders(event)) {
-          elementBelow.setAttribute("droppable", false);
-        }
-      }
-
-      const cells = identifyCellsToMakeDroppable(event);
-      makeUndroppable(cells);
-
-      const newShipCoordinates = [];
-      cells.forEach((cell) => {
-        newShipCoordinates.push(
-          Array.from(cell.classList[0].split(",").map(Number)),
-        );
-      });
-      ship.assignCoordinates(newShipCoordinates);
-
-      isDragging = false;
-      movedBy = 0;
-      draggableElement.style.left = 0;
-      draggableElement.style.top = 0;
-      draggableElement.style.zIndex = 5;
-      offSetX = null;
-      offSetY = null;
-      mouseDownOffsetHor = 0;
-      mouseDownOffsetVer = 0;
-      draggableElement.classList.remove("dragging");
-    }
-    draggableElement = null;
-    draggableElementRect = null;
-    updateDroppableAttribute();
   };
 
   const throttledMouseDown = throttle(onMouseDown, 200);
