@@ -78,28 +78,28 @@ function GameboardModule() {
   }
 
   // Fill the Ships array
-  function createShips() {
-    const shipsConfig = [
-      //   {
-      //     shipLength: 1,
-      //     shipId: 0,
-      //   },
-      //   {
-      //     shipLength: 1,
-      //     shipId: 1,
-      //   },
-      //   {
-      //     shipLength: 1,
-      //     shipId: 2,
-      //   },
-      //   {
-      //     shipLength: 2,
-      //     shipId: 3,
-      //   },
-      //   {
-      //     shipLength: 2,
-      //     shipId: 4,
-      //   },
+  function createShips(shipsList) {
+    const shipsTemplate = [
+      {
+        shipLength: 1,
+        shipId: 0,
+      },
+      {
+        shipLength: 1,
+        shipId: 1,
+      },
+      {
+        shipLength: 1,
+        shipId: 2,
+      },
+      {
+        shipLength: 2,
+        shipId: 3,
+      },
+      {
+        shipLength: 2,
+        shipId: 4,
+      },
       {
         shipLength: 3,
         shipId: 5,
@@ -109,6 +109,15 @@ function GameboardModule() {
         shipId: 6,
       },
     ];
+
+    // For tests
+    let shipsConfig = null;
+    if (shipsList) {
+      shipsConfig = shipsList;
+    } else {
+      shipsConfig = shipsTemplate;
+    }
+
     shipsConfig.forEach((element) => {
       const ship = ShipModule.createShip(element.shipLength, element.shipId);
       ships.push(ship);

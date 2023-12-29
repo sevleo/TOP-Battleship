@@ -3,15 +3,19 @@ import GameboardModule from "../src/gameboard";
 const ships = [
   {
     shipLength: 1,
+    shipId: 0,
   },
   {
     shipLength: 2,
+    shipId: 1,
   },
   {
     shipLength: 3,
+    shipId: 2,
   },
   {
     shipLength: 4,
+    shipId: 3,
   },
 ];
 
@@ -92,6 +96,7 @@ describe("testing attack function", () => {
   });
 
   describe("3 length ship", () => {
+    console.log(board.ships[2]);
     board.ships[2].assignCoordinates([6, 1], [6, 2], [6, 3]);
     board.ships[2].setOrientation();
     test("test hit", () => {
