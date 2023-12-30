@@ -1,18 +1,43 @@
 # Battleship
 
+Battleship is a classic game of strategy and precision. The objective is to strategically place your fleet of ships on a grid and take turns with an opponent to target and destroy each other's vessels.
+
+This project served as a platform for refining my object-oriented programming skills while implementing a seamless drag & drop functionality using vanilla JavaScript. Additionally, I applied a Test-Driven Development (TDD) approach to ensure robustness and reliability.
+
 ## Table of Contents
 
 - [Demo](#demo)
-- [Features](#features)
+- [Technologies used](#technologies)
+- [Limitations](#limitations)
 - [How to Play](#how-to-play)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Demo
 
-## Features
+You can view the project at [Battleship](https://sevleo.github.io/battleship/).
+
+![Home page screenshot](screenshot.png)
+
+## Technologies
+
+- Javascript
+- CSS
+- HTML
+- Webpack
+- Jest
+
+## Limitations
+
+- The game has only been tested and adjusted for Google Chrome
+- The game has not been tested and adjusted for mobile views
 
 ## How To Play
+
+- Drag the ships to where you want them to be or click "reset" to assign random positions
+- click "start" to start the game
+- click tiles on the right board to shoot at enemy fleet
+- whoever destroys all enemy ships first, wins
 
 ## Contributing
 
