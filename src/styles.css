@@ -48,6 +48,18 @@ body {
   margin-bottom: 50px;
 }
 
+.commands.hide {
+  opacity: 0.3;
+  user-select: none;
+  pointer-events: none;
+}
+
+.commands > div.disabled {
+  opacity: 0.3;
+  user-select: none;
+  pointer-events: none;
+}
+
 .commands > div {
   /* user-select: none; */
   cursor: pointer;
@@ -80,6 +92,24 @@ body {
   outline: 0.5px solid rgb(118, 118, 118, 0.6);
   justify-self: center;
   margin: 20px;
+  position: relative;
+}
+
+.boards > .playerTwo-board > .winnerOne,
+.boards > .playerOne-board > .winnerTwo {
+  position: absolute;
+  top: -50px;
+  left: 50%; /* Move to the middle horizontally */
+  transform: translate(-50%, 0%); /* Adjust for element's size */
+  outline: none;
+}
+
+.boards > .playerTwo-board > .winnerOne {
+  color: green;
+}
+
+.boards > .playerOne-board > .winnerTwo {
+  color: red;
 }
 
 .playerOne-board {

@@ -39,14 +39,24 @@ function addEventListeners() {
   // Event listener on start button
   const startButton = document.querySelector(".start-game");
   startButton.addEventListener("click", () => {
-    console.log("start");
-    console.log(playerOneBoard);
-    console.log(playerTwoBoard);
+    // console.log("start");
+    // console.log(playerOneBoard);
+    // console.log(playerTwoBoard);
+    const winnerAnn1 = document.querySelector(".winnerOne");
+    const winnerAnn2 = document.querySelector(".winnerTwo");
+    if (winnerAnn1) {
+      winnerAnn1.remove();
+    }
+    if (winnerAnn2) {
+      winnerAnn2.remove();
+    }
     playerOneBoard.locked = true;
     const playerOneBoardDiv = document.querySelector(".playerOne-board");
     playerOneBoardDiv.classList.add("locked");
     const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
     playerTwoBoardDiv.classList.remove("locked");
+    // randomizeButton.classList.add("disabled");
+    startButton.classList.add("disabled");
   });
 
   // Event listeners on opponent board cells
@@ -62,10 +72,14 @@ function addEventListeners() {
           !cellDiv.classList.contains("miss")
         ) {
           handleAttack(cellDiv, playerTwoBoard, playerTwoBoardDiv);
-          console.log(playerTwoBoard.shots.length);
+          // console.log(playerTwoBoard.shots.length);
 
           if (playerTwoBoard.allShipsSunk()) {
-            console.log(`${playerOneBoard.player.player.type} wins`);
+            const winnerAnnounceOne = document.createElement("div");
+            winnerAnnounceOne.classList.add("winnerOne");
+            winnerAnnounceOne.textContent = `you win`;
+            playerTwoBoardDiv.append(winnerAnnounceOne);
+            playerTwoBoardDiv.classList.add("locked");
           } else {
             playerTwoBoardDiv.classList.add("locked");
             const randomMove = playerOneBoard.player.makeRandomMove();
@@ -76,12 +90,15 @@ function addEventListeners() {
             setTimeout(() => {
               handleAttack(randomMoveDiv, playerOneBoard, playerOneBoardDiv);
               if (playerOneBoard.allShipsSunk()) {
-                console.log(`${playerTwoBoard.player.player.type} wins`);
+                const winnerAnnounceTwo = document.createElement("div");
+                winnerAnnounceTwo.classList.add("winnerTwo");
+                winnerAnnounceTwo.textContent = `your rival wins`;
+                playerOneBoardDiv.append(winnerAnnounceTwo);
               } else {
                 playerTwoBoardDiv.classList.remove("locked");
               }
-              console.log(playerOneBoard.shots.length);
-              console.log(randomMoveDiv);
+              // console.log(playerOneBoard.shots.length);
+              // console.log(randomMoveDiv);
             }, 500);
           }
         }

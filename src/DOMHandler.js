@@ -29,7 +29,7 @@ const DOMHandler = (() => {
                 {
                   type: "div",
                   class: "randomize",
-                  textContent: "randomize",
+                  textContent: "reset",
                 },
                 {
                   type: "div",
@@ -399,13 +399,13 @@ const DOMHandler = (() => {
       div.append(shipDiv);
     });
 
-    DOMHandler.playerTwoShips.forEach((ship) => {
-      ship.coordinates.forEach((c) => {
-        const parentDivBoardTwo = document.querySelector(".playerTwo-board");
-        const div = findDivByCoordinates(`${c[0]},${c[1]}`, parentDivBoardTwo);
-        // div.classList.add("ship-cell");
-      });
-    });
+    // DOMHandler.playerTwoShips.forEach((ship) => {
+    //   ship.coordinates.forEach((c) => {
+    //     const parentDivBoardTwo = document.querySelector(".playerTwo-board");
+    //     const div = findDivByCoordinates(`${c[0]},${c[1]}`, parentDivBoardTwo);
+    //     div.classList.add("ship-cell");
+    //   });
+    // });
   }
 
   function createDom() {
@@ -422,8 +422,10 @@ const DOMHandler = (() => {
         `${coordinate[0]},${coordinate[1]}`,
         boardDiv,
       );
-      sunkShipDiv.classList.add("sunk");
-      sunkShipDiv.classList.add("hit");
+      if (sunkShipDiv) {
+        sunkShipDiv.classList.add("sunk");
+        sunkShipDiv.classList.add("hit");
+      }
     });
   }
 

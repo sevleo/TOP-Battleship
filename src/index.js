@@ -10,7 +10,7 @@ let playerOneBoard = null;
 let playerTwoBoard = null;
 let playerOne = null;
 let playerTwo = null;
-let currentPlayer = null;
+// let currentPlayer = null;
 
 function gameLoop() {
   const main = document.querySelector(".main");
@@ -24,7 +24,7 @@ function gameLoop() {
   playerOneBoard.locked = false;
   playerOne = Player(playerOneBoard, "human");
   playerOneBoard.player = playerOne;
-  currentPlayer = playerOne;
+  // currentPlayer = playerOne;
 
   playerTwoBoard = GameboardModule();
   playerTwoBoard.createBoard();
@@ -46,12 +46,12 @@ function gameLoop() {
 gameLoop();
 addDocumentEventListeners();
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "c" || event.key === "C") {
-    console.log(playerOne);
-    console.log(playerTwo);
-  }
-});
+// document.addEventListener("keydown", (event) => {
+//   if (event.key === "c" || event.key === "C") {
+//     console.log(playerOne);
+//     console.log(playerTwo);
+//   }
+// });
 
 export default gameLoop;
 export { playerOneBoard, playerTwoBoard };
