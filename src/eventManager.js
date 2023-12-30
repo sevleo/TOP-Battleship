@@ -582,13 +582,14 @@ function addDocumentEventListeners() {
         const cells = identifyCellsToMakeDroppable(event);
         makeUndroppable(cells);
 
-        const newShipCoordinates = [];
+        // eslint-disable-next-line prefer-const
+        let newShipCoordinates = [];
         cells.forEach((cell) => {
           newShipCoordinates.push(
             Array.from(cell.classList[0].split(",").map(Number)),
           );
         });
-        ship.assignCoordinates(newShipCoordinates);
+        ship.updateCoordinates(newShipCoordinates);
 
         isDragging = false;
         movedBy = 0;

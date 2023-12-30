@@ -46,12 +46,12 @@ function gameLoop() {
 gameLoop();
 addDocumentEventListeners();
 
-// document.addEventListener("keydown", (event) => {
-//   if (event.key === "c" || event.key === "C") {
-//     console.log(playerOne);
-//     console.log(playerTwo);
-//   }
-// });
+document.addEventListener("keydown", (event) => {
+  if (event.key === "c" || event.key === "C") {
+    console.log(playerOne);
+    console.log(playerTwo);
+  }
+});
 
 export default gameLoop;
 export { playerOneBoard, playerTwoBoard };

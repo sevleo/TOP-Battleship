@@ -20,8 +20,15 @@ const ShipModule = (() => {
       },
 
       assignCoordinates(...args) {
+        // args.forEach((arg) => {
+        //   ship.coordinates.push(arg);
+        // });
         ship.coordinates = args;
         // console.log(ship.coordinates);
+      },
+
+      updateCoordinates(coordinates) {
+        ship.coordinates = coordinates;
       },
 
       setOrientation() {
