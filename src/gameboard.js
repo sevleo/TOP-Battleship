@@ -145,14 +145,14 @@ function GameboardModule() {
       missedShotVertex.missShot = true;
       missingShots.push(missedShotVertex.coordinates);
     }
-    missedShotVertex.adjacencyList.forEach((element) => {
-      if (!missingShots.includes(element.coordinates)) {
-        if (!element.occupiedByShip) {
-          missingShots.push(element.coordinates);
-          element.missShotNeighbor = true;
-        }
-      }
-    });
+    // missedShotVertex.adjacencyList.forEach((element) => {
+    //   if (!missingShots.includes(element.coordinates)) {
+    //     if (!element.occupiedByShip) {
+    //       missingShots.push(element.coordinates);
+    //       element.missShotNeighbor = true;
+    //     }
+    //   }
+    // });
   }
 
   // Find ship by shipId
