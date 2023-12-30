@@ -9,6 +9,7 @@ function GameboardModule() {
   const board = new Graph();
   const ships = [];
   const missingShots = [];
+  const shots = [];
 
   // Create 10x10 cells as graph vertexes
   function createCells() {
@@ -145,14 +146,14 @@ function GameboardModule() {
       missedShotVertex.missShot = true;
       missingShots.push(missedShotVertex.coordinates);
     }
-    // missedShotVertex.adjacencyList.forEach((element) => {
-    //   if (!missingShots.includes(element.coordinates)) {
-    //     if (!element.occupiedByShip) {
-    //       missingShots.push(element.coordinates);
-    //       element.missShotNeighbor = true;
-    //     }
-    //   }
-    // });
+  }
+
+  // Fill the missingShots array
+  function recordShot(coordinates) {
+    const shotVertex = findVertextObjectByCoordinates(coordinates);
+    if (!shots.includes(shotVertex.coordinates)) {
+      shots.push(shotVertex.coordinates);
+    }
   }
 
   // Find ship by shipId
@@ -182,6 +183,8 @@ function GameboardModule() {
             playerBoardDiv,
           );
           missedCellDiv.classList.add("miss-neigbour");
+          recordMissingShot(adj.coordinates);
+          recordShot(adj.coordinates);
         }
       });
     });
@@ -189,6 +192,7 @@ function GameboardModule() {
 
   // Register and process attacks
   function receiveAttack(coordinates, playerBoardDiv) {
+    recordShot(coordinates);
     let hitRegistered = false;
     ships.some((ship) => {
       if (
@@ -292,6 +296,7 @@ function GameboardModule() {
     board,
     ships,
     missingShots,
+    shots,
     createBoard,
     createShips,
     receiveAttack,

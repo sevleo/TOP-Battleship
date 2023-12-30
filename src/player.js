@@ -8,11 +8,11 @@ function Player(b, t) {
     const randomValueCoordinates =
       player.board.board.vertices[Math.floor(Math.random() * 100)].coordinates;
 
-    if (player.board.missingShots.length === 100) {
+    if (player.board.shots.length === 100) {
       return null;
     }
 
-    if (!player.board.missingShots.includes(randomValueCoordinates)) {
+    if (!player.board.shots.includes(randomValueCoordinates)) {
       return randomValueCoordinates;
     }
     return makeRandomMove();

@@ -4,6 +4,31 @@
 import gameLoop, { playerOneBoard, playerTwoBoard } from ".";
 import DOMHandler from "./DOMHandler";
 
+function handleAttack(cellDiv, board, boardDiv) {
+  const attackCoordinates = cellDiv.classList[0].split(",").map(Number);
+  const makeHit = board.receiveAttack(attackCoordinates, boardDiv);
+  if (makeHit) {
+    cellDiv.classList.add("hit");
+  } else {
+    board.board.vertices.forEach((vertex) => {
+      if (vertex.missShot) {
+        const missedCellDiv = DOMHandler.findDivByCoordinates(
+          `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+          boardDiv,
+        );
+        missedCellDiv.classList.add("miss");
+      }
+      if (vertex.missShotNeighbor) {
+        const missedCellDiv = DOMHandler.findDivByCoordinates(
+          `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
+          boardDiv,
+        );
+        missedCellDiv.classList.add("miss-neigbour");
+      }
+    });
+  }
+}
+
 function addEventListeners() {
   // Event listener on randomize button
   const randomizeButton = document.querySelector(".randomize");
@@ -25,6 +50,7 @@ function addEventListeners() {
   });
 
   // Event listeners on opponent board cells
+  const playerOneBoardDiv = document.querySelector(".playerOne-board");
   const playerTwoBoardDiv = document.querySelector(".playerTwo-board");
   const boardTwoCells = playerTwoBoardDiv.querySelectorAll(".cell");
   boardTwoCells.forEach((cellDiv) => {
@@ -32,32 +58,31 @@ function addEventListeners() {
       if (!playerTwoBoardDiv.classList.contains("locked")) {
         if (
           !cellDiv.classList.contains("miss-neigbour") &&
-          !cellDiv.classList.contains("hit")
+          !cellDiv.classList.contains("hit") &&
+          !cellDiv.classList.contains("miss")
         ) {
-          const attackCoordinates = cellDiv.classList[0].split(",").map(Number);
-          const makeHit = playerTwoBoard.receiveAttack(
-            attackCoordinates,
-            playerTwoBoardDiv,
-          );
-          if (makeHit) {
-            cellDiv.classList.add("hit");
+          handleAttack(cellDiv, playerTwoBoard, playerTwoBoardDiv);
+          console.log(playerTwoBoard.shots.length);
+
+          if (playerTwoBoard.allShipsSunk()) {
+            console.log(`${playerOneBoard.player.player.type} wins`);
           } else {
-            playerTwoBoard.board.vertices.forEach((vertex) => {
-              if (vertex.missShot) {
-                const missedCellDiv = DOMHandler.findDivByCoordinates(
-                  `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
-                  playerTwoBoardDiv,
-                );
-                missedCellDiv.classList.add("miss");
+            playerTwoBoardDiv.classList.add("locked");
+            const randomMove = playerOneBoard.player.makeRandomMove();
+            const randomMoveDiv = DOMHandler.findDivByCoordinates(
+              randomMove,
+              playerOneBoardDiv,
+            );
+            setTimeout(() => {
+              handleAttack(randomMoveDiv, playerOneBoard, playerOneBoardDiv);
+              if (playerOneBoard.allShipsSunk()) {
+                console.log(`${playerTwoBoard.player.player.type} wins`);
+              } else {
+                playerTwoBoardDiv.classList.remove("locked");
               }
-              if (vertex.missShotNeighbor) {
-                const missedCellDiv = DOMHandler.findDivByCoordinates(
-                  `${vertex.coordinates[0]},${vertex.coordinates[1]}`,
-                  playerTwoBoardDiv,
-                );
-                missedCellDiv.classList.add("miss-neigbour");
-              }
-            });
+              console.log(playerOneBoard.shots.length);
+              console.log(randomMoveDiv);
+            }, 500);
           }
         }
       }

@@ -423,6 +423,7 @@ const DOMHandler = (() => {
         boardDiv,
       );
       sunkShipDiv.classList.add("sunk");
+      sunkShipDiv.classList.add("hit");
     });
   }
 
