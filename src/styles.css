@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100&family=Lato:wght@300&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Roboto:wght@100&family=Rubik:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Maps&display=swap");
 
 * {
   margin: 0;
@@ -22,6 +23,8 @@ body {
   height: 100%;
   grid-template-columns: 1fr;
   grid-template-rows: 100px 1fr;
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 
 .header {
@@ -38,6 +41,12 @@ body {
   justify-content: center;
   align-items: start;
   /* padding-top: 40px; */
+  max-width: 1960px;
+  justify-self: center;
+}
+.header {
+  max-width: 1960px;
+  justify-self: center;
 }
 
 .commands {
@@ -81,8 +90,8 @@ body {
   /* gap: 20px; */
   justify-content: center;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
+  /* padding-left: 20px; */
+  /* padding-right: 20px; */
 }
 
 .boards > .playerOne-board,
@@ -91,8 +100,10 @@ body {
   height: 400px;
   outline: 0.5px solid rgb(118, 118, 118, 0.6);
   justify-self: center;
-  margin: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .boards > .playerTwo-board > .winnerOne,
@@ -260,4 +271,15 @@ body {
 .playerOne-board .cell.sunk {
   background-color: rgba(255, 0, 0, 0.2);
   /* outline: 1px solid red; */
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.battleship-label {
+  font-family: "Rubik Maps";
+  font-size: 50px;
 }

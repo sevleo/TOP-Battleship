@@ -17,6 +17,13 @@ const DOMHandler = (() => {
         {
           type: "div",
           class: "header",
+          childrenElements: [
+            {
+              type: "div",
+              class: "battleship-label",
+              textContent: "Battleship",
+            },
+          ],
         },
         {
           type: "div",
