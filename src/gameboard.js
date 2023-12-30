@@ -169,11 +169,11 @@ function GameboardModule() {
 
   function updateAdjacentCells(ship, playerBoardDiv) {
     ship.coordinates.forEach((coordinate) => {
-      console.log(ship);
-      console.log(ship.coordinates);
-      console.log(coordinate);
+      // console.log(ship);
+      // console.log(ship.coordinates);
+      // console.log(coordinate);
       const vertex = findVertextObjectByCoordinates(coordinate);
-      console.log(vertex);
+      // console.log(vertex);
       vertex.adjacencyList.forEach((adj) => {
         if (
           adj.missShot === false &&

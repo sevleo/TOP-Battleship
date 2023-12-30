@@ -253,6 +253,12 @@ function addDocumentEventListeners() {
             const array = className.split(",").map(Number);
             const vertex = playerOneBoard.findVertextObjectByCoordinates(array);
 
+            if (vertex.occupiedByShip === true) {
+              if (elementBelow) {
+                noOverlap = false;
+              }
+            }
+
             vertex.adjacencyList.forEach((adjacency) => {
               if (adjacency.occupiedByShip === true) {
                 if (elementBelow) {
