@@ -15,7 +15,7 @@ This project served as a platform for refining my object-oriented programming sk
 
 ## Demo
 
-You can view the project at [Battleship](https://sevleo.github.io/battleship/).
+You can view the project at [Battleship](https://sevleo.github.io/TOP-Battleship/).
 
 ![Home page screenshot](screenshot.png)
 
